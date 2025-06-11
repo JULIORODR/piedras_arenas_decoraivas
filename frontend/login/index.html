@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="login-container">
+        <h1>INICIAR SESIÓN</h1>
+        <form class="login-form">
+            <input type="email" id="correo" placeholder="Correo electrónico" required>
+            <input type="password" id="contrasena" placeholder="Contraseña" required>
+            <div class="remember-row">
+                <input type="checkbox" id="remember">
+                <label for="remember">Recordarme</label>
+            </div>
+            <button type="submit">ENTRAR</button>
+        </form>
+        <div id="mensajeError" style="color: red; margin-top: 10px;"></div>
+        <div class="register-row">
+            <span>¿No tienes una cuenta? <a href="../registro/index.html">Regístrate aquí</a></span>
+        </div>
+        <a href="../bienvenida/index.html">Volver a la página principal</a>
+        <div class="login-image"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "db_mysql",
+            "database": "db_piedras_arenas",
+            "username": "root",
+            "password": "1026299643Julio"
+        }
+    ],
+    "liveServer.settings.port": 5504
+}
