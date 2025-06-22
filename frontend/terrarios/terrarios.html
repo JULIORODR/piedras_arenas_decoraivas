@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terrarios | Piedras y Arenas Decorativas</title>
+    <link rel="stylesheet" href="terrarios.css">
+</head>
+<body class="base-layout fondo-natural">
+  <!-- HEADER -->
+  <header class="main-header">
+    <div class="logo">Tierra Viva</div>
+    <nav class="nav">
+      <a href="#">Inicio</a>
+      <a href="#">Terrarios</a>
+      <a href="#">Proyectos</a>
+      <a href="#">Contacto</a>
+    </nav>
+    <div class="header-icons">
+      <button class="icon-btn" aria-label="Buscar">
+        <img src="images/imagen ini.jpg" alt="Buscar" />
+      </button>
+      <button class="icon-btn" aria-label="Carrito" onclick="abrirCarrito()">
+        <img src="/icons/cart.svg" alt="Carrito" />
+        <span id="cart-count" class="cart-count">0</span>
+      </button>
+      <button class="icon-btn" aria-label="Perfil" onclick="abrirPerfilModal()">
+        <img src="/icons/user.svg" alt="Perfil" />
+      </button>
+    </div>
+  </header>
+  <!-- MAIN CONTENT -->
+  <main class="product-main">
+    <h1 class="product-title">Terrarios y Kits</h1>
+    <div class="product-gallery-grid">
+      <div class="gallery-item" onclick="mostrarDetalle(0)">
+        <img src="/images/terrario-vidrio.jpg" alt="Terrario de vidrio grande">
+        <div class="gallery-info">
+          <div class="gallery-name">Terrario de vidrio grande</div>
+          <div class="gallery-price">$65.000</div>
+          <button class="btn-primary btn-vermas">Ver más</button>
+        </div>
+      </div>
+      <div class="gallery-item" onclick="mostrarDetalle(1)">
+        <img src="/images/kit-terrario.jpg" alt="Kit de terrario DIY">
+        <div class="gallery-info">
+          <div class="gallery-name">Kit de terrario DIY</div>
+          <div class="gallery-price">$38.000</div>
+          <button class="btn-primary btn-vermas">Ver más</button>
+        </div>
+      </div>
+      <div class="gallery-item" onclick="mostrarDetalle(2)">
+        <img src="/images/terrario-mini.jpg" alt="Terrario mini suculentas">
+        <div class="gallery-info">
+          <div class="gallery-name">Terrario mini suculentas</div>
+          <div class="gallery-price">$22.000</div>
+          <button class="btn-primary btn-vermas">Ver más</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- FOOTER -->
+  <footer class="main-footer">
+    <div class="footer-content">
+        <div class="footer-logo-social">
+            <img src="../../images/letras Decoradas.png" alt="Logo Piedras y Arenas Decorativas" class="footer-logo">
+            <div class="footer-social">
+                <a href="#" title="Facebook"><img src="../../images/facebook logos vector (AI, EPS, SVG, PDF, CDR) free download.jpeg" alt="Facebook" class="footer-social-icon"></a>
+                <a href="#" title="Instagram"><img src="../../images/Instagram png icon vector.jpeg" alt="Instagram" class="footer-social-icon"></a>
+                <a href="#" title="Twitter"><img src="../../images/imagen4.png" alt="Twitter" class="footer-social-icon"></a>
+            </div>
+        </div>
+        <div class="footer-links">
+            <div>
+                <strong>Contacto</strong><br>
+                +34 600 123 456<br>
+                info@piedrasyarenas.com
+            </div>
+            <div>
+                <strong>Enlaces</strong><br>
+                <a href="#">Inicio</a><br>
+                <a href="#productos">Productos</a><br>
+                <a href="#perfil">Perfil</a><br>
+                <a href="#nosotros">Nosotros</a>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- PROFILE MODAL -->
+<div id="modal-perfil" class="modal-variante" style="display:none;">
+  <div class="modal-content modal-content-form" id="modal-perfil-content">
+    <button class="modal-close" onclick="cerrarPerfilModal()" style="font-size:2rem;top:10px;right:16px;">&times;</button>
+    <h2>Mi Perfil</h2>
+    <div id="perfil-compras">
+      <h3>Productos comprados</h3>
+      <ul id="lista-compras">
+        <!-- Se llena por JS -->
+      </ul>
+    </div>
+    <button class="btn-primary btn-form-grande" onclick="cerrarSesion()" style="margin-top:18px;">Cerrar sesión</button>
+  </div>
+</div>
+<script>
+  // ...existing code...
+  function abrirPerfilModal() {
+    const compras = JSON.parse(localStorage.getItem('compras_usuario') || '[]');
+    const lista = document.getElementById('lista-compras');
+    lista.innerHTML = compras.length
+      ? compras.map(p => `<li>${p.nombre} x${p.cantidad} - $${p.precio.toLocaleString()}</li>`).join('')
+      : '<li>No has comprado productos aún.</li>';
+    document.getElementById('modal-perfil').style.display = 'flex';
+  }
+  function cerrarPerfilModal() {
+    document.getElementById('modal-perfil').style.display = 'none';
+  }
+  function cerrarSesion() {
+    localStorage.removeItem('usuario');
+    localStorage.removeItem('compras_usuario');
+    window.location.href = '/bienvenida.html';
+  }
+  // ...existing code...
+</script>
+</body>
+</html>

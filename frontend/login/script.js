@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         mensajeError.textContent = 'Ingreso exitoso.';
                     }
                     setTimeout(() => {
-                        window.location.href = '../productos/index.html';
+                        window.location.href = '../inicio/index.html';
                     }, 1000);
                 } else {
                     if(mensajeError) {

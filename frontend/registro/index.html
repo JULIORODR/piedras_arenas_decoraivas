@@ -3,15 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
+    <title>Registro | Arenas y Piedras Decorativas</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="background-image"></div>
-    <div class="registro-container">
-        <h2>Registro</h2>
+  <div class="registro-main-container">
+    <!-- Columna visual -->
+    <div class="registro-visual-col">
+      <div class="registro-visual-overlay"></div>
+      <img src="/images/logo-arenas-piedras.png" alt="Logo Arenas y Piedras" class="registro-logo-img">
+      <div class="registro-visual-text">
+        <h2>Arenas y Piedras Decorativas</h2>
+        <p>Regístrate y comienza a transformar tus espacios con la belleza natural de nuestras piedras y arenas.</p>
+      </div>
+    </div>
+    <!-- Columna formulario -->
+    <div class="registro-form-col">
+      <div class="registro-form-box">
+        <h1>Crear cuenta</h1>
         <form id="registroForm">
-            <input type="text" id="nombre" placeholder="Nombre completo" required>
+            <input type="text" id="nombre" placeholder="Nombre completo" required autofocus>
             <input type="email" id="correo" placeholder="Correo electrónico" required>
             <input type="password" id="contrasena" placeholder="Contraseña" required>
             <input type="password" id="confirmarContrasena" placeholder="Confirmar contraseña" required>
@@ -26,13 +38,9 @@
             <br>
             <a href="../bienvenida/index.html">Volver a la página principal</a>
         </div>
+      </div>
     </div>
-    <script src="script.js"></script>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
-<div class="auth-container">
-  <div class="auth-box">
-    <h2 class="brand-title">Piedras Arenas</h2>
-    <!-- Campos de formulario -->
-  </div>
-</div>

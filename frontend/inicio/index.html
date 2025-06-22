@@ -1,160 +1,700 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Piedras y Arenas Naturales - Inicio</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tierra Viva</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=EB+Garamond:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    // Navegación sticky al hacer scroll
+    window.addEventListener('scroll', function() {
+      const header = document.querySelector('.header');
+      if(window.scrollY > 40) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Menú móvil toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const burger = document.getElementById('burger-menu');
+      const nav = document.querySelector('.main-nav');
+      if(burger && nav) {
+        burger.addEventListener('click', function() {
+          nav.classList.toggle('nav-open');
+        });
+      }
+    });
+
+    // Scroll suave para anclas
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          const href = this.getAttribute('href');
+          if(href.length > 1 && document.querySelector(href)) {
+            e.preventDefault();
+            document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+    });
+
+    // Animación de productos al hacer hover
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('mouseenter', () => card.classList.add('hovered'));
+        card.addEventListener('mouseleave', () => card.classList.remove('hovered'));
+      });
+    });
+
+    // Íconos flotantes animados en beneficios
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.benefit-icon img').forEach(icon => {
+        icon.addEventListener('mouseenter', () => icon.classList.add('icon-float'));
+        icon.addEventListener('mouseleave', () => icon.classList.remove('icon-float'));
+      });
+    });
+  </script>
 </head>
-<body>
-    <header class="main-header">
-        <nav class="navbar">
-            <div class="logo">Piedras & Arenas</div>
-            <ul class="nav-links">
-                <li><a href="../inicio/index.html">Inicio</a></li>
-                <li><a href="../productos/index.html">Productos</a></li>
-                <li><a href="/registro/index.html">Registro</a></li>
-                <li><a href="../login/index.html">Login</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section class="main-banner natural-banner">
-            <div class="banner-content">
-                <div class="banner-info">
-                    <span class="promo-label">Producto destacado</span>
-                    <h1>Decoración Natural para Interiores</h1>
-                    <div class="banner-price">Desde <span class="price-highlight">$320</span></div>
-                    <button class="shop-btn">Comprar ahora</button>
-                </div>
-                <img src="../../images/imagen2.jpg" alt="Decoración natural" class="banner-main-img">
-            </div>
-            <div class="banner-side">
-                <div class="side-card new-category">
-                    <span class="side-label">Nueva Categoría</span>
-                    <h3>Monsera</h3>
-                    <button class="side-btn">Ver más</button>
-                    <img src="../../images/maticas.png" alt="Monsera" class="side-img">
-                </div>
-                <div class="side-card new-product">
-                    <span class="side-label">Nuevo Producto</span>
-                    <h3>Planta para Jardín</h3>
-                    <button class="side-btn">Ver más</button>
-                    <img src="../../images/arbolito.jpg" alt="Planta jardín" class="side-img">
-                </div>
-            </div>
-        </section>
-        <section class="filter-section">
-            <div class="filter-bar">
-                <button class="filter-btn active">Todos</button>
-                <button class="filter-btn">Piedras</button>
-                <button class="filter-btn">Arenas</button>
-                <button class="filter-btn">Maticas</button>
-                <button class="filter-btn">Monsera</button>
-            </div>
-            <div class="view-options">
-                <span class="view-icon">🔲</span>
-                <span class="filter-icon">⚙️</span>
-            </div>
-        </section>
-        <section class="products-gallery">
-            <div class="product-card natural-card">
-                <span class="rating">4.5★</span>
-                <img src="../../images/imagen2.png" alt="Psium Sativum">
-                <div class="product-info">
-                    <span class="product-title">Psium Sativum</span>
-                    <span class="product-price">$210.00</span>
-                </div>
-            </div>
-            <div class="product-card natural-card">
-                <span class="rating">4.5★</span>
-                <img src="../../images/imagen3.png" alt="Cactus Sam">
-                <div class="product-info">
-                    <span class="product-title">Cactus Sam</span>
-                    <span class="product-price">$100.00</span>
-                </div>
-            </div>
-            <div class="product-card natural-card highlight">
-                <span class="rating">4.5★</span>
-                <img src="../../images/imagen4.png" alt="Mini Green">
-                <div class="product-info">
-                    <span class="product-title">Mini Green</span>
-                    <span class="product-price">$320.00</span>
-                </div>
-            </div>
-            <div class="product-card natural-card">
-                <span class="rating">4.5★</span>
-                <img src="../../images/imagen5.jpg" alt="Cactus Sam">
-                <div class="product-info">
-                    <span class="product-title">Cactus Sam</span>
-                    <span class="product-price">$221.00</span>
-                </div>
-            </div>
-        </section>
-        <section class="latest-blogs">
-            <h2>ÚLTIMOS BLOGS</h2>
-            <div class="desc">Descubre las últimas novedades y consejos</div>
-            <div class="blogs-list">
-                <div class="blog-card">
-                    <img src="../../images/imagen5.jpg" alt="Blog 1">
-                    <div class="blog-info">
-                        <div class="blog-title">Decoración con piedras</div>
-                        <p>Ideas para decorar tu hogar con piedras naturales y darle un toque único.</p>
-                    </div>
-                </div>
-                <div class="blog-card">
-                    <img src="../../images/imagen6.jpg" alt="Blog 2">
-                    <div class="blog-info">
-                        <div class="blog-title">Tendencias en arenas</div>
-                        <p>Descubre las últimas tendencias en el uso de arenas decorativas.</p>
-                    </div>
-                </div>
-                <div class="blog-card">
-                    <img src="../../images/imagen7.jpg" alt="Blog 3">
-                    <div class="blog-info">
-                        <div class="blog-title">Cuidados de maticas</div>
-                        <p>Consejos para mantener tus maticas siempre verdes y saludables.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-    <footer class="main-footer">
-        <div class="footer-content">
-            <div class="footer-top-row">
-                <div class="footer-logo-social">
-                    <img src="../../images/letras Decoradas.png" alt="Logo Piedras & Arenas" class="footer-logo">
-                    <div class="footer-social">
-                        <a href="https://facebook.com" target="_blank" title="Facebook"><img src="../../images/facebook logos vector (AI, EPS, SVG, PDF, CDR) free download.jpeg" alt="Facebook" class="footer-social-icon"></a>
-                        <a href="https://instagram.com" target="_blank" title="Instagram"><img src="../../images/Instagram png icon vector.jpeg" alt="Instagram" class="footer-social-icon"></a>
-                    </div>
-                </div>
-                <div class="footer-links">
-                    <div>
-                        <strong>Productos</strong><br>
-                        Piedras<br>
-                        Arenas<br>
-                        Maticas<br>
-                    </div>
-                    <div>
-                        <strong>Categoría</strong><br>
-                        Nuevos<br>
-                        Más vendidos<br>
-                        Ofertas<br>
-                    </div>
-                    <div>
-                        <strong>Compañía</strong><br>
-                        Sobre nosotros<br>
-                        Contacto<br>
-                        Soporte<br>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom-row">
-                © 2024 Piedras & Arenas Naturales. Todos los derechos reservados.
-            </div>
+<body class="base-layout fondo-natural">
+  <!-- Header -->
+  <header class="header header-unificado">
+    <div class="header-container">
+      <div class="logo">
+        <span class="logo-icon">🌿</span>
+        Tierra Viva
+      </div>
+      <nav class="main-nav">
+        <a href="#">Inicio</a>
+        <a href="productos">Productos</a>
+        <a href="#testimonios">Testimonios</a>
+        <a href="#suscripcion">Suscripción</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+        
+        <!-- Botón Carrito -->
+        <div class="header-icons">
+          <button class="icon-btn" aria-label="Carrito" onclick="abrirCarrito()">
+            <img src="/icons/cart.svg" alt="Carrito" />
+            <span id="cart-count" class="cart-count">0</span>
+          </button>
         </div>
-    </footer>
-    <script src="script.js"></script>
+        <!-- Botón Perfil -->
+        <button class="icon-btn" aria-label="Perfil" onclick="abrirPerfilModal()">
+          <img src="/icons/user.svg" alt="Perfil" />
+        </button>
+        <button id="burger-menu" class="icon-btn burger-menu" aria-label="Menú">&#9776;</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Modales para carrito y perfil -->
+  <div id="cart-modal" class="modal" style="display:none;">
+    <div class="modal-content" style="max-width:420px;padding:32px 28px 24px 28px;border-radius:18px;box-shadow:0 8px 32px #0002;">
+      <span class="close" id="close-cart-modal" style="font-size:2rem;position:absolute;top:18px;right:24px;cursor:pointer;">&times;</span>
+      <h2 style="margin-bottom:18px;font-size:1.6rem;color:#bfa074;text-align:center;letter-spacing:1px;">🛒 Tu carrito</h2>
+      <div id="cart-items" style="margin-bottom:18px;min-height:60px;">
+        <!-- Productos del carrito -->
+      </div>
+      <div id="cart-total" style="font-weight:bold;font-size:1.2rem;text-align:right;margin-bottom:18px;"></div>
+      <button id="review-order-btn" class="btn btn-main" style="width:100%;padding:12px 0;font-size:1.1rem;border-radius:8px;">Revisar pedido</button>
+    </div>
+  </div>
+  <div id="profile-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close" id="close-profile-modal">&times;</span>
+      <div id="profile-content"></div>
+    </div>
+  </div>
+  <div id="modal-carrito" class="modal-variante">
+    <div class="modal-content modal-content-form" id="modal-carrito-content">
+      <button class="modal-close" onclick="cerrarCarrito()" style="font-size:2rem;top:10px;right:16px;">&times;</button>
+      <h2>Carrito de compras</h2>
+      <form id="form-compra" class="form-compra form-compra-finalizar scroll-formulario">
+        <div class="form-section">
+          <h3 class="form-title"><span class="form-icon">🛒</span>Productos seleccionados</h3>
+          <div id="carrito-lista"></div>
+          <div id="carrito-total" style="margin:12px 0 0 0;font-weight:600;"></div>
+        </div>
+        <div class="form-section">
+          <h3 class="form-title"><span class="form-icon">👤</span>Datos del cliente</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cliente-nombre"><span class="input-icon">👤</span>Nombre completo</label>
+              <input type="text" id="cliente-nombre" required autocomplete="name" placeholder="Ej: Juan Pérez" />
+              <span class="form-error" id="error-nombre"></span>
+            </div>
+            <div class="form-group">
+              <label for="cliente-email"><span class="input-icon">✉️</span>Correo electrónico</label>
+              <input type="email" id="cliente-email" required autocomplete="email" placeholder="Ej: correo@email.com" />
+              <span class="form-error" id="error-email"></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cliente-direccion"><span class="input-icon">🏠</span>Dirección</label>
+            <input type="text" id="cliente-direccion" required autocomplete="street-address" placeholder="Ej: Calle 123, Ciudad" />
+            <span class="form-error" id="error-direccion"></span>
+          </div>
+          <div class="form-group">
+            <label for="cliente-telefono"><span class="input-icon">📞</span>Teléfono <small style="color:#bfa074;">(opcional)</small></label>
+            <input type="tel" id="cliente-telefono" autocomplete="tel" placeholder="Ej: 3001234567" />
+            <span class="form-error" id="error-telefono"></span>
+          </div>
+        </div>
+        <div class="form-section">
+          <h3 class="form-title"><span class="form-icon">💳</span>Método de pago</h3>
+          <div class="form-pago-opciones">
+            <label class="form-pago-radio selected">
+              <input type="radio" name="pago" value="transferencia" checked> Transferencia
+            </label>
+            <label class="form-pago-radio">
+              <input type="radio" name="pago" value="tarjeta"> Tarjeta
+            </label>
+            <label class="form-pago-radio">
+              <input type="radio" name="pago" value="efectivo"> Efectivo
+            </label>
+          </div>
+        </div>
+        <button class="btn-primary btn-confirmar btn-form-grande" type="submit" style="width:100%;margin-top:12px;">Finalizar compra</button>
+      </form>
+    </div>
+  </div>
+  <div id="modal-perfil" class="modal-variante" style="display:none;">
+    <div class="modal-content modal-content-form" id="modal-perfil-content">
+      <button class="modal-close" onclick="cerrarPerfilModal()" style="font-size:2rem;top:10px;right:16px;">&times;</button>
+      <h2>Mi Perfil</h2>
+      <div id="perfil-compras">
+        <h3>Productos comprados</h3>
+        <ul id="lista-compras">
+          <!-- Se llena por JS -->
+        </ul>
+      </div>
+      <button class="btn-primary btn-form-grande" onclick="cerrarSesion()" style="margin-top:18px;">Cerrar sesión</button>
+    </div>
+  </div>
+  <div id="notificaciones" class="notificaciones"></div>
+  <script>
+    // Carrito compartido
+    function getCarrito() {
+      return JSON.parse(localStorage.getItem('carrito') || '[]');
+    }
+    function setCarrito(arr) {
+      localStorage.setItem('carrito', JSON.stringify(arr));
+      document.getElementById('cart-count').textContent = arr.reduce((a, b) => a + b.cantidad, 0);
+    }
+    // Llenar contador al cargar
+    document.addEventListener('DOMContentLoaded', function() {
+      setCarrito(getCarrito());
+    });
+    function abrirCarrito() {
+      renderCarrito();
+      document.getElementById('modal-carrito').style.display = 'flex';
+      setTimeout(() => {
+        const primerCampo = document.getElementById('cliente-nombre');
+        if (primerCampo) primerCampo.focus();
+      }, 200);
+    }
+    function cerrarCarrito() {
+      document.getElementById('modal-carrito').style.display = 'none';
+    }
+    function renderCarrito() {
+      const carrito = getCarrito();
+      const lista = document.getElementById('carrito-lista');
+      if (!lista) return;
+      if (carrito.length === 0) {
+        lista.innerHTML = "<div style='margin:24px 0;'>El carrito está vacío.</div>";
+        document.getElementById('carrito-total').textContent = '';
+        return;
+      }
+      let html = '';
+      let total = 0;
+      carrito.forEach((item, i) => {
+        const subtotal = item.precio * item.cantidad;
+        total += subtotal;
+        html += `
+          <div class="carrito-item">
+            <img src="${item.img}" alt="${item.nombre}" class="carrito-img-mini">
+            <span class="carrito-nombre">${item.nombre}</span>
+            <input type="number" min="1" max="99" value="${item.cantidad}" class="carrito-cantidad-input" onchange="actualizarCantidadCarrito(${i}, this.value)">
+            <span class="carrito-precio">$${subtotal.toLocaleString()}</span>
+            <button type="button" class="carrito-eliminar" onclick="eliminarDelCarrito(${i})" title="Eliminar este producto">✕</button>
+          </div>
+        `;
+      });
+      lista.innerHTML = html;
+      document.getElementById('carrito-total').textContent = "Total: $" + total.toLocaleString();
+    }
+    function actualizarCantidadCarrito(idx, nuevaCantidad) {
+      let carrito = getCarrito();
+      nuevaCantidad = parseInt(nuevaCantidad, 10);
+      if (isNaN(nuevaCantidad) || nuevaCantidad < 1) return;
+      carrito[idx].cantidad = nuevaCantidad;
+      setCarrito(carrito);
+      renderCarrito();
+    }
+    function eliminarDelCarrito(idx) {
+      let carrito = getCarrito();
+      carrito.splice(idx, 1);
+      setCarrito(carrito);
+      renderCarrito();
+    }
+    // Notificación visual
+    function mostrarNotificacion(mensaje, tipo) {
+      const notificaciones = document.getElementById('notificaciones');
+      const div = document.createElement('div');
+      div.className = `notificacion notificacion-${tipo}`;
+      div.textContent = mensaje;
+      notificaciones.appendChild(div);
+      setTimeout(() => {
+        div.classList.add('visible');
+      }, 100);
+      setTimeout(() => {
+        div.classList.remove('visible');
+        setTimeout(() => {
+          notificaciones.removeChild(div);
+        }, 300);
+      }, 3000);
+    }
+    // Validación y envío del formulario de compra
+    document.getElementById('form-compra').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      document.getElementById('error-nombre').textContent = '';
+      document.getElementById('error-email').textContent = '';
+      document.getElementById('error-direccion').textContent = '';
+      document.getElementById('error-telefono').textContent = '';
+      const nombre = document.getElementById('cliente-nombre').value.trim();
+      const email = document.getElementById('cliente-email').value.trim();
+      const direccion = document.getElementById('cliente-direccion').value.trim();
+      const telefono = document.getElementById('cliente-telefono').value.trim();
+      const pago = document.querySelector('input[name="pago"]:checked')?.value || '';
+      const carrito = getCarrito();
+      const cliente = { nombre, email, direccion };
+      if (telefono) cliente.telefono = telefono;
+      const productos = carrito.map(item => ({
+        nombre: String(item.nombre).trim(),
+        cantidad: Number(item.cantidad),
+        precio: Number(item.precio)
+      }));
+      const total = productos.reduce((a, b) => a + (b.precio * b.cantidad), 0);
+      const fecha = new Date().toLocaleString();
+      const datosCompra = { productos, cliente, pago, total, fecha };
+      if (
+        !Array.isArray(productos) || productos.length === 0 ||
+        !cliente || typeof cliente.nombre !== 'string' || !cliente.nombre.trim() ||
+        typeof cliente.email !== 'string' || !cliente.email.trim() ||
+        typeof cliente.direccion !== 'string' || !cliente.direccion.trim() ||
+        typeof pago !== 'string' || !pago.trim() ||
+        typeof total !== 'number' || isNaN(total) || total <= 0 ||
+        typeof fecha !== 'string' || !fecha.trim() ||
+        productos.some(p =>
+          typeof p.nombre !== 'string' || !p.nombre.trim() ||
+          typeof p.cantidad !== 'number' || isNaN(p.cantidad) || p.cantidad <= 0 ||
+          typeof p.precio !== 'number' || isNaN(p.precio) || p.precio < 0
+        )
+      ) {
+        mostrarNotificacion('Revisa que todos los campos obligatorios estén completos y correctos.', 'error');
+        return;
+      }
+      try {
+        const res = await fetch('http://localhost:3001/api/comprar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(datosCompra)
+        });
+        let data = {};
+        try { data = await res.json(); } catch (e) { data = {}; }
+        if (res.ok && data.success) {
+          mostrarNotificacion('¡Compra realizada con éxito!', 'success');
+          setCarrito([]);
+          cerrarCarrito();
+          setTimeout(() => location.reload(), 1000);
+        } else {
+          mostrarNotificacion(data.mensaje || 'Error en la compra. Revisa los datos.', 'error');
+        }
+      } catch (err) {
+        mostrarNotificacion('No se pudo conectar con el servidor.', 'error');
+      }
+    });
+  </script>
+
+  <!-- Hero Banner con scroll-down -->
+  <section class="hero-banner" id="inicio">
+    <video class="hero-video-bg" src="/images/video/video piedras.mp4" autoplay muted loop playsinline></video>
+    <div class="hero-video-overlay"></div>
+    <div class="hero-video-content">
+      <h1>Bienvenido a Tierra Viva</h1>
+      <p>Descubre la belleza natural en cada detalle.<br> Piedras, arenas y gravas para transformar tus espacios.</p>
+      <a href="#productos" class="btn btn-main">Explora la colección</a>
+      <div class="scroll-down" onclick="document.getElementById('productos').scrollIntoView({behavior:'smooth'})">
+        <span>↓</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="contenido-central">
+    <!-- Productos destacados -->
+    <section class="featured-products" id="productos">
+      <h2 class="section-title">Productos destacados</h2>
+      <div class="products-grid">
+        <div class="product-card">
+          <span class="product-badge badge-offer">En oferta!</span>
+          <img src="/images/piedra-rio.jpg" alt="Piedra de río natural" class="product-img">
+          <div class="product-title">Piedra de río<br><span class="product-weight">(10 kg)</span></div>
+          <div class="product-price-row">
+            <span class="product-price-old">$35.000</span>
+            <span class="product-price">$28.000</span>
+          </div>
+          <button class="btn btn-product">Ver más</button>
+        </div>
+        <div class="product-card">
+          <img src="/images/primiuminta.jpg" alt="Primiuminta premium" class="product-img">
+          <div class="product-title">Primiuminta<br>premium</div>
+          <div class="product-price-row">
+            <span class="product-price">$42.000</span>
+          </div>
+          <button class="btn btn-product">Ver más</button>
+        </div>
+        <div class="product-card">
+          <img src="/images/grava-volcanica.jpg" alt="Grava volcánica roja" class="product-img">
+          <div class="product-title">Grava volcánica roja<br><span class="product-weight">(15 kg)</span></div>
+          <div class="product-price-row">
+            <span class="product-price">$30.000</span>
+          </div>
+          <button class="btn btn-product">Ver más</button>
+        </div>
+        <div class="product-card">
+          <img src="/images/piedra-negra.jpg" alt="Piedra decorativa negra brillante" class="product-img">
+          <div class="product-title">Piedra decorativa negra brillante<br><span class="product-weight">(10 kg)</span></div>
+          <div class="product-price-row">
+            <span class="product-price">$38.000</span>
+          </div>
+          <button class="btn btn-product">Ver más</button>
+        </div>
+      </div>
+    </section>
+    <hr class="divider">
+
+    <!-- Beneficios animados -->
+    <section class="benefits-row">
+      <div class="benefit">
+        <span class="benefit-icon"><img src="/icons/envio.svg" alt="Envíos"></span>
+        <span>Envíos a todo el país</span>
+      </div>
+      <div class="benefit">
+        <span class="benefit-icon"><img src="/icons/pago.svg" alt="Pagos"></span>
+        <span>Pagos seguros y múltiples medios</span>
+      </div>
+      <div class="benefit">
+        <span class="benefit-icon"><img src="/icons/asesoria.svg" alt="Asesoría"></span>
+        <span>Asesoría para proyectos paisajísticos</span>
+      </div>
+    </section>
+
+    <!-- Llamado secundario -->
+    <section class="secondary-cta">
+      <div class="secondary-cta-text">
+        Tu jardín, terraza o espacio zen... todo empieza con una buena base
+      </div>
+      <a href="#productos" class="btn btn-secondary">Descubre más ideas</a>
+    </section>
+  </main>
+
+  <!-- Testimonios -->
+  <section class="testimonials" id="testimonios">
+    <h3>Lo que dicen nuestros clientes</h3>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <p>"¡Excelente calidad y atención! Mi jardín quedó espectacular."</p>
+        <span class="testimonial-author">– Laura G.</span>
+      </div>
+      <div class="testimonial-card">
+        <p>"Las piedras llegaron rápido y en perfecto estado. Muy recomendados."</p>
+        <span class="testimonial-author">– Andrés P.</span>
+      </div>
+      <div class="testimonial-card">
+        <p>"Gracias a Tierra Viva, mi terraza tiene un toque natural único."</p>
+        <span class="testimonial-author">– Camila R.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Suscripción / Footer -->
+  <section class="newsletter-bar footer-unificado" id="suscripcion">
+    <div class="newsletter-content">
+      <div>
+        <strong>Recibe inspiración natural y ofertas exclusivas</strong>
+        <div class="newsletter-desc">Deja tu correo y se parte de nuestra comunidad eco-decorativa</div>
+      </div>
+      <form class="newsletter-form">
+        <input type="email" placeholder="Tu correo electrónico" required>
+        <button type="submit" class="btn btn-newsletter">→</button>
+      </form>
+      <div class="newsletter-contact" id="contacto">
+        contacto@tierraviva.com
+        <span class="newsletter-social">
+          <a href="#"><img src="/icons/instagram.svg" alt="Instagram"></a>
+          <a href="#"><img src="/icons/whatsapp.svg" alt="WhatsApp"></a>
+          <a href="#"><img src="/icons/pinterest.svg" alt="Pinterest"></a>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Carrito y perfil: lógica básica
+    document.addEventListener('DOMContentLoaded', function() {
+      // --- Carrito ---
+      const cartBtn = document.getElementById('cart-btn');
+      const cartModal = document.getElementById('cart-modal');
+      const closeCartModal = document.getElementById('close-cart-modal');
+      const cartCount = document.getElementById('cart-count');
+      const cartItems = document.getElementById('cart-items');
+
+      let usuarioCorreo = localStorage.getItem('usuarioCorreo') || null;
+
+      function actualizarCarrito() {
+        if (!usuarioCorreo) {
+          cartCount.textContent = 0;
+          cartItems.innerHTML = '<p style="text-align:center;color:#bfa074;">Inicia sesión para ver tu carrito.</p>';
+          document.getElementById('cart-total').textContent = '';
+          return;
+        }
+        fetch(`http://localhost:3001/api/carrito?correo=${encodeURIComponent(usuarioCorreo)}`)
+          .then(res => res.json())
+          .then(data => {
+            cartCount.textContent = data.length;
+            if (data.length === 0) {
+              cartItems.innerHTML = '<p style="text-align:center;color:#bfa074;">Tu carrito está vacío.</p>';
+              document.getElementById('cart-total').textContent = '';
+            } else {
+              let total = 0;
+              cartItems.innerHTML = data.map((item, idx) => {
+                total += item.precio * item.cantidad;
+                return `
+                  <div class="cart-item">
+                    <span>${item.nombre} <span style="color:#888;font-size:0.95em;">x${item.cantidad}</span></span>
+                    <span>$${(item.precio * item.cantidad).toLocaleString()}</span>
+                    <button class="cart-remove-btn" title="Eliminar" onclick="eliminarDelCarrito(${idx})">&times;</button>
+                  </div>
+                `;
+              }).join('');
+              document.getElementById('cart-total').textContent = "Total: $" + total.toLocaleString();
+            }
+          })
+          .catch(() => {
+            cartCount.textContent = 0;
+            cartItems.innerHTML = '<p style="text-align:center;color:#bfa074;">Error al cargar el carrito.</p>';
+            document.getElementById('cart-total').textContent = '';
+          });
+      }
+
+      cartBtn.addEventListener('click', function() {
+        cartModal.style.display = 'block';
+        actualizarCarrito();
+      });
+      closeCartModal.addEventListener('click', function() {
+        cartModal.style.display = 'none';
+      });
+
+      // --- Perfil ---
+      const profileBtn = document.getElementById('profile-btn');
+      const profileModal = document.getElementById('profile-modal');
+      const closeProfileModal = document.getElementById('close-profile-modal');
+      const profileContent = document.getElementById('profile-content');
+
+      function mostrarPerfil() {
+        if (!usuarioCorreo) {
+          profileContent.innerHTML = `
+            <h2>Iniciar sesión</h2>
+            <form id="login-form">
+              <input type="email" id="login-correo" placeholder="Correo" required><br>
+              <input type="password" id="login-contrasena" placeholder="Contraseña" required><br>
+              <button type="submit" class="btn btn-main">Entrar</button>
+            </form>
+          `;
+          document.getElementById('login-form').onsubmit = function(e) {
+            e.preventDefault();
+            const correo = document.getElementById('login-correo').value;
+            const contrasena = document.getElementById('login-contrasena').value;
+            fetch('http://localhost:3001/api/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ correo, contrasena })
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.user) {
+                usuarioCorreo = data.user.correo;
+                localStorage.setItem('usuarioCorreo', usuarioCorreo);
+                mostrarPerfil();
+                actualizarCarrito();
+              } else {
+                alert(data.message || 'Error de inicio de sesión');
+              }
+            });
+          };
+        } else {
+          fetch(`http://localhost:3001/api/usuario?correo=${encodeURIComponent(usuarioCorreo)}`)
+            .then(res => res.json())
+            .then(user => {
+              profileContent.innerHTML = `
+                <h2>Mi perfil</h2>
+                <div><b>Nombre:</b> <span id="user-nombre">${user.nombre}</span></div>
+                <div><b>Correo:</b> ${user.correo}</div>
+                <button id="logout-btn" class="btn btn-secondary">Cerrar sesión</button>
+                <h3>Editar información</h3>
+                <form id="edit-profile-form">
+                  <input type="text" id="edit-nombre" value="${user.nombre}" required><br>
+                  <input type="password" id="edit-contrasena" placeholder="Nueva contraseña"><br>
+                  <button type="submit" class="btn btn-main">Guardar cambios</button>
+                </form>
+                <h3>Mis pedidos</h3>
+                <div id="user-orders">Cargando...</div>
+              `;
+              document.getElementById('logout-btn').onclick = function() {
+                usuarioCorreo = null;
+                localStorage.removeItem('usuarioCorreo');
+                mostrarPerfil();
+                actualizarCarrito();
+              };
+              document.getElementById('edit-profile-form').onsubmit = function(e) {
+                e.preventDefault();
+                const nombre = document.getElementById('edit-nombre').value;
+                const nueva_contrasena = document.getElementById('edit-contrasena').value;
+                fetch('http://localhost:3001/api/usuario/actualizar', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ correo: usuarioCorreo, nombre, nueva_contrasena })
+                })
+                .then(res => res.json())
+                .then(data => {
+                  alert(data.message);
+                  mostrarPerfil();
+                });
+              };
+              fetch(`http://localhost:3001/api/usuario/pedidos?correo=${encodeURIComponent(usuarioCorreo)}`)
+                .then(res => res.json())
+                .then(pedidos => {
+                  const ordersDiv = document.getElementById('user-orders');
+                  if (pedidos.length === 0) {
+                    ordersDiv.innerHTML = '<p>No tienes pedidos aún.</p>';
+                  } else {
+                    ordersDiv.innerHTML = pedidos.map(p =>
+                      `<div class="order-item">
+                        <span>Producto ID: ${p.producto_id}</span> |
+                        <span>Cantidad: ${p.cantidad}</span> |
+                        <span>Fecha: ${new Date(p.fecha || p.created_at).toLocaleDateString()}</span>
+                      </div>`
+                    ).join('');
+                  }
+                });
+            });
+        }
+      }
+
+      profileBtn.addEventListener('click', function() {
+        profileModal.style.display = 'block';
+        mostrarPerfil();
+      });
+      closeProfileModal.addEventListener('click', function() {
+        profileModal.style.display = 'none';
+      });
+
+      window.onclick = function(event) {
+        if (event.target === cartModal) cartModal.style.display = 'none';
+        if (event.target === profileModal) profileModal.style.display = 'none';
+      };
+
+      if (usuarioCorreo) actualizarCarrito();
+    });
+  </script>
+  <script>
+    // ...existing code...
+    function abrirPerfilModal() {
+      const compras = JSON.parse(localStorage.getItem('compras_usuario') || '[]');
+      const lista = document.getElementById('lista-compras');
+      lista.innerHTML = compras.length
+        ? compras.map(p => `<li>${p.nombre} x${p.cantidad} - $${p.precio.toLocaleString()}</li>`).join('')
+        : '<li>No has comprado productos aún.</li>';
+      document.getElementById('modal-perfil').style.display = 'flex';
+    }
+    function cerrarPerfilModal() {
+      document.getElementById('modal-perfil').style.display = 'none';
+    }
+    function cerrarSesion() {
+      localStorage.removeItem('usuario');
+      localStorage.removeItem('compras_usuario');
+      window.location.href = '/bienvenida.html';
+    }
+    // ...existing code...
+  </script>
+  <style>
+    /* Apariencia mejorada para el carrito */
+    #cart-modal .modal-content {
+      background: #fffdfa;
+      border: 2px solid #bfa074;
+      box-shadow: 0 8px 32px #0002;
+      border-radius: 18px;
+      position: relative;
+      animation: modalFadeIn .3s;
+    }
+    #cart-items .cart-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 1.05rem;
+    }
+    #cart-items .cart-item:last-child {
+      border-bottom: none;
+    }
+    #cart-items .cart-item span:first-child {
+      flex: 1 1 60%;
+      color: #444;
+    }
+    #cart-items .cart-item span:last-child {
+      flex: 0 0 80px;
+      text-align: right;
+      color: #bfa074;
+      font-weight: bold;
+    }
+    #cart-items .cart-item .cart-remove-btn {
+      background: none;
+      border: none;
+      color: #bfa074;
+      font-size: 1.2rem;
+      margin-left: 10px;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    #cart-items .cart-item .cart-remove-btn:hover {
+      color: #a67c52;
+    }
+    #cart-total {
+      border-top: 1.5px solid #bfa074;
+      padding-top: 10px;
+      margin-top: 10px;
+      color: #bfa074;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(40px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    /* Botón revisar pedido */
+    #review-order-btn {
+      background: #bfa074;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    #review-order-btn:hover {
+      background: #a67c52;
+    }
+  </style>
 </body>
 </html>

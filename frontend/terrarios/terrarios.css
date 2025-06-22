@@ -1,0 +1,129 @@
+/* HEADER */
+.main-header {
+    background: #e0f7e9;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding-bottom: 0.5em;
+}
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 18px 30px 0 30px;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+    font-size: 1.4em;
+    color: #388e3c;
+    font-weight: bold;
+}
+.header-logo {
+    height: 38px;
+    margin-right: 12px;
+}
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2em;
+    margin: 0;
+    padding: 0;
+}
+.nav-links li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 1.08em;
+    transition: color 0.2s;
+    padding: 6px 12px;
+    border-radius: 5px;
+}
+.nav-links li a.active,
+.nav-links li a:hover {
+    background: #b2dfdb;
+    color: #1b5e20;
+}
+.cart-counter {
+    background: #388e3c;
+    color: #fff;
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.cart-icon {
+    font-size: 1.2em;
+}
+
+/* FOOTER */
+.main-footer {
+    background: #e0f7e9;
+    padding: 32px 0 18px 0;
+    margin-top: 40px;
+    border-top: 2px solid #b2dfdb;
+}
+.footer-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 30px;
+}
+.footer-logo-social {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+.footer-logo {
+    height: 36px;
+}
+.footer-social {
+    display: flex;
+    gap: 12px;
+}
+.footer-social-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    transition: box-shadow 0.2s;
+}
+.footer-social-icon:hover {
+    box-shadow: 0 2px 8px rgba(56,142,60,0.18);
+}
+.footer-links {
+    display: flex;
+    gap: 40px;
+    font-size: 1em;
+}
+.footer-links strong {
+    color: #388e3c;
+    font-size: 1.08em;
+}
+.footer-links a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.footer-links a:hover {
+    color: #388e3c;
+}
+@media (max-width: 800px) {
+    .navbar, .footer-content {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 18px 10px 0 10px;
+    }
+    .footer-links {
+        flex-direction: column;
+        gap: 18px;
+    }
+}

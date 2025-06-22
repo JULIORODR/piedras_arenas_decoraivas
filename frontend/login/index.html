@@ -3,12 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Iniciar Sesión | Arenas y Piedras Decorativas</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="login-container">
-        <h1>INICIAR SESIÓN</h1>
+  <div class="login-main-container">
+    <!-- Columna visual -->
+    <div class="login-visual-col">
+      <div class="login-visual-overlay"></div>
+      <img src="/images/logo-arenas-piedras.png" alt="Logo Arenas y Piedras" class="login-logo-img">
+      <div class="login-visual-text">
+        <h2>Arenas y Piedras Decorativas</h2>
+        <p>Transforma tus espacios con la belleza natural de nuestras piedras y arenas. Calidad, diseño y naturaleza en un solo lugar.</p>
+      </div>
+    </div>
+    <!-- Columna formulario -->
+    <div class="login-form-col">
+      <div class="login-form-box">
+        <h1>Iniciar Sesión</h1>
         <form class="login-form">
             <input type="email" id="correo" placeholder="Correo electrónico" required>
             <input type="password" id="contrasena" placeholder="Contraseña" required>
@@ -16,15 +29,16 @@
                 <input type="checkbox" id="remember">
                 <label for="remember">Recordarme</label>
             </div>
-            <button type="submit">ENTRAR</button>
+            <button type="submit">Entrar</button>
         </form>
-        <div id="mensajeError" style="color: red; margin-top: 10px;"></div>
+        <div id="mensajeError"></div>
         <div class="register-row">
             <span>¿No tienes una cuenta? <a href="../registro/index.html">Regístrate aquí</a></span>
         </div>
-        <a href="../bienvenida/index.html">Volver a la página principal</a>
-        <div class="login-image"></div>
+        <a href="../bienvenida/index.html" class="volver">Volver a la página principal</a>
+      </div>
     </div>
-    <script src="script.js"></script>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>

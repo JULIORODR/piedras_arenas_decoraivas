@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arenas Decorativas | Tierra Viva</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="arenas.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <header class="main-header">
+    <div class="logo">Tierra Viva</div>
+    <nav class="nav">
+      <a href="#">Inicio</a>
+      <a href="#">Productos</a>
+      <a href="#">Proyectos</a>
+      <a href="#">Contacto</a>
+    </nav>
+    <div class="header-icons">
+      <button class="icon-btn" aria-label="Buscar">
+        <img src="images/imagen ini.jpg" alt="Buscar" />
+      </button>
+      <button class="icon-btn" aria-label="Carrito" onclick="abrirCarrito()">
+        <img src="/icons/cart.svg" alt="Carrito" />
+        <span id="cart-count" class="cart-count">0</span>
+      </button>
+      <button class="icon-btn" aria-label="Perfil" onclick="abrirPerfilModal()">
+        <img src="/icons/user.svg" alt="Perfil" />
+      </button>
+    </div>
+  </header>
+
+  <main class="product-main">
+    <h1 class="product-title">Arenas Decorativas</h1>
+    <div class="product-gallery-grid">
+      <div class="gallery-item" onclick="mostrarDetalle(0)">
+        <img src="/images/arena-color.jpg" alt="Arena de colores 5kg">
+        <div class="gallery-info">
+          <div class="gallery-name">Arena de colores (5 kg)</div>
+          <div class="gallery-price">$12.000</div>
+          <button class="btn-primary btn-vermas">Ver más</button>
+        </div>
+      </div>
+      <div class="gallery-item" onclick="mostrarDetalle(1)">
+        <img src="/images/arena-blanca.jpg" alt="Arena blanca fina 10kg">
+        <div class="gallery-info">
+          <div class="gallery-name">Arena blanca fina (10 kg)</div>
+          <div class="gallery-price">$18.000</div>
+          <button class="btn-primary btn-vermas">Ver más</button>
+        </div>
+      </div>
+      <div class="gallery-item" onclick="mostrarDetalle(2)">
+        <img src="/images/arena-gris.jpg" alt="Arena gris volcánica 8kg">
+        <div class="gallery-info">
+          <div class="gallery-name">Arena gris volcánica (8 kg)</div>
+          <div class="gallery-price">$15.000</div>
+          <button class="btn-primary btn-vermas">Ver más</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detalle de producto dinámico -->
+    <div id="detalle-producto" style="display:none;">
+      <button class="btn-volver" onclick="volverGaleria()">← Volver</button>
+      <h1 class="product-title" id="detalle-nombre"></h1>
+      <div class="product-price" id="detalle-precio"></div>
+      <div class="product-view">
+        <div class="product-gallery">
+          <img id="detalle-img" class="product-main-img" src="" alt="">
+        </div>
+        <div class="product-info-detail">
+          <p class="product-description" id="detalle-desc"></p>
+          <div class="product-actions">
+            <select class="qty-select" id="qty">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+            <button class="btn-primary" onclick="abrirModalVariante()">Comprar</button>
+          </div>
+          <section class="product-details">
+            <h2>Detalles</h2>
+            <table class="product-details-table" id="detalle-table">
+              <!-- Se llena por JS -->
+            </table>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div class="inspiration-section">
+      Recibe inspiración natural y ofertas exclusivas
+    </div>
+  </main>
+  <!-- Modal de variantes -->
+  <div id="modal-variante" class="modal-variante">
+    <div class="modal-content">
+      <button class="modal-close" onclick="cerrarModalVariante()">&times;</button>
+      <h2>Elige una variante</h2>
+      <div class="variante-lista" id="variante-lista">
+        <!-- Se llena por JS -->
+      </div>
+      <button class="btn-primary btn-confirmar" id="btn-confirmar-variante" disabled onclick="confirmarVariante()">Agregar al carrito</button>
+    </div>
+  </div>
+  <!-- Modal Carrito -->
+  <div id="modal-carrito" class="modal-variante">
+    <div class="modal-content modal-content-form" id="modal-carrito-content">
+      <button class="modal-close" onclick="cerrarCarrito()" style="font-size:2rem;top:10px;right:16px;">&times;</button>
+      <h2>Carrito de compras</h2>
+      <form id="form-compra" class="form-compra form-compra-finalizar scroll-formulario">
+        <div class="form-section">
+          <h3 class="form-title"><span class="form-icon">🛒</span>Productos seleccionados</h3>
+          <div id="carrito-lista"></div>
+          <div id="carrito-total" style="margin:12px 0 0 0;font-weight:600;"></div>
+        </div>
+        <div class="form-section">
+          <h3 class="form-title"><span class="form-icon">👤</span>Datos del cliente</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cliente-nombre"><span class="input-icon">👤</span>Nombre completo</label>
+              <input type="text" id="cliente-nombre" required autocomplete="name" placeholder="" />
+              <span class="form-error" id="error-nombre"></span>
+            </div>
+            <div class="form-group">
+              <label for="cliente-email"><span class="input-icon">✉️</span>Correo electrónico</label>
+              <input type="email" id="cliente-email" required autocomplete="email" placeholder="" />
+              <span class="form-error" id="error-email"></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cliente-direccion"><span class="input-icon">🏠</span>Dirección</label>
+            <input type="text" id="cliente-direccion" required autocomplete="street-address" placeholder="" />
+            <span class="form-error" id="error-direccion"></span>
+          </div>
+          <div class="form-group">
+            <label for="cliente-telefono"><span class="input-icon">📞</span>Teléfono <small style="color:#bfa074;">(opcional)</small></label>
+            <input type="tel" id="cliente-telefono" autocomplete="tel" placeholder="" />
+            <span class="form-error" id="error-telefono"></span>
+          </div>
+        </div>
+        <div class="form-section">
+          <h3 class="form-title"><span class="form-icon">💳</span>Método de pago</h3>
+          <div class="form-pago-opciones">
+            <label class="form-pago-radio selected">
+              <input type="radio" name="pago" value="transferencia" checked> Transferencia
+            </label>
+            <label class="form-pago-radio">
+              <input type="radio" name="pago" value="tarjeta"> Tarjeta
+            </label>
+            <label class="form-pago-radio">
+              <input type="radio" name="pago" value="efectivo"> Efectivo
+            </label>
+          </div>
+        </div>
+        <button class="btn-primary btn-confirmar btn-form-grande" type="submit" style="width:100%;margin-top:12px;">Finalizar compra</button>
+      </form>
+    </div>
+  </div>
+  <!-- Modal Perfil -->
+  <div id="modal-perfil" class="modal-variante" style="display:none;">
+    <div class="modal-content modal-content-form" id="modal-perfil-content">
+      <button class="modal-close" onclick="cerrarPerfilModal()" style="font-size:2rem;top:10px;right:16px;">&times;</button>
+      <h2>Mi Perfil</h2>
+      <div id="perfil-compras">
+        <h3>Productos comprados</h3>
+        <ul id="lista-compras">
+          <!-- Se llena por JS -->
+        </ul>
+      </div>
+      <button class="btn-primary btn-form-grande" onclick="cerrarSesion()" style="margin-top:18px;">Cerrar sesión</button>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">Tierra Viva</div>
+      <div class="footer-links">
+        <a href="#">Políticas</a>
+        <a href="#">Contacto</a>
+        <a href="#">Redes</a>
+      </div>
+      <div class="social-icons">
+        <a href="#"><img src="/icons/facebook.svg" alt="Facebook"></a>
+        <a href="#"><img src="/icons/instagram.svg" alt="Instagram"></a>
+        <a href="#"><img src="/icons/twitter.svg" alt="Twitter"></a>
+      </div>
+      <div class="footer-legal">
+        <small>© 2025 Tierra Viva. Todos los derechos reservados.</small>
+      </div>
+    </div>
+  </footer>
+  <!-- Notificaciones visuales -->
+  <div id="notificaciones" class="notificaciones"></div>
+  <script>
+    // Datos de productos con inventario
+    const productos = [
+      {
+        nombre: "Arena de colores (5 kg)",
+        precio: 12000,
+        img: "/images/arena-color.jpg",
+        desc: "Arena decorativa de colores vibrantes, ideal para terrarios, macetas y manualidades.",
+        detalles: [
+          ["Tamaño del grano", "0.5 – 1 mm"],
+          ["Peso por unidad", "5 kg"],
+          ["Disponibilidad", "En stock"],
+          ["Cuidados", "Evitar humedad excesiva"]
+        ],
+        inventario: 10
+      },
+      {
+        nombre: "Arena blanca fina (10 kg)",
+        precio: 18000,
+        img: "/images/arena-blanca.jpg",
+        desc: "Arena blanca de grano fino, perfecta para decoración de jardines zen, acuarios y manualidades.",
+        detalles: [
+          ["Tamaño del grano", "0.2 – 0.8 mm"],
+          ["Peso por unidad", "10 kg"],
+          ["Disponibilidad", "En stock"],
+          ["Cuidados", "Mantener seca"]
+        ],
+        inventario: 7
+      },
+      {
+        nombre: "Arena gris volcánica (8 kg)",
+        precio: 15000,
+        img: "/images/arena-gris.jpg",
+        desc: "Arena de origen volcánico, color gris natural, ideal para paisajismo y suculentas.",
+        detalles: [
+          ["Tamaño del grano", "1 – 2 mm"],
+          ["Peso por unidad", "8 kg"],
+          ["Disponibilidad", "En stock"],
+          ["Cuidados", "No exponer a humedad constante"]
+        ],
+        inventario: 5
+      }
+    ];
+    let carrito = 0;
+    let productoActual = 0;
+    function mostrarDetalle(idx) {
+      productoActual = idx;
+      document.querySelector('.product-gallery-grid').style.display = 'none';
+      document.getElementById('detalle-producto').style.display = 'block';
+      document.getElementById('detalle-nombre').textContent = productos[idx].nombre;
+      document.getElementById('detalle-precio').textContent = "$" + productos[idx].precio.toLocaleString();
+      document.getElementById('detalle-img').src = productos[idx].img;
+      document.getElementById('detalle-img').alt = productos[idx].nombre;
+      document.getElementById('detalle-desc').textContent = productos[idx].desc;
+      // Detalles
+      let table = document.getElementById('detalle-table');
+      table.innerHTML = "";
+      productos[idx].detalles.forEach(d => {
+        let tr = document.createElement('tr');
+        tr.innerHTML = `<td><b>${d[0]}</b></td><td>${d[1]}</td>`;
+        table.appendChild(tr);
+      });
+    }
+    function volverGaleria() {
+      document.getElementById('detalle-producto').style.display = 'none';
+      document.querySelector('.product-gallery-grid').style.display = 'flex';
+    }
+    // Modal variantes
+    function abrirModalVariante() {
+      let lista = document.getElementById('variante-lista');
+      lista.innerHTML = '';
+      productos.forEach((p, i) => {
+        let div = document.createElement('div');
+        div.className = 'variante-item';
+        div.onclick = () => seleccionarVariante(i);
+        div.innerHTML = `
+          <img src="${p.img}" alt="${p.nombre}">
+          <div>
+            <div class="variante-nombre">${p.nombre}</div>
+            <div class="variante-precio">$${p.precio.toLocaleString()}</div>
+            <div class="variante-stock">Stock: <span id="stock-${i}">${p.inventario}</span></div>
+          </div>
+        `;
+        if (p.inventario === 0) {
+          div.classList.add('agotado');
+          div.onclick = null;
+        }
+        lista.appendChild(div);
+      });
+      document.getElementById('modal-variante').style.display = 'flex';
+      seleccionarVariante(productoActual);
+    }
+    function cerrarModalVariante() {
+      document.getElementById('modal-variante').style.display = 'none';
+    }
+    let varianteSeleccionada = null;
+    function seleccionarVariante(idx) {
+      document.querySelectorAll('.variante-item').forEach((el, i) => {
+        el.classList.toggle('selected', i === idx);
+      });
+      if (productos[idx] && productos[idx].inventario > 0) {
+        varianteSeleccionada = idx;
+        document.getElementById('btn-confirmar-variante').disabled = false;
+      } else {
+        varianteSeleccionada = null;
+        document.getElementById('btn-confirmar-variante').disabled = true;
+      }
+    }
+    // Carrito persistente
+    function getCarrito() {
+      return JSON.parse(localStorage.getItem('carrito') || '[]');
+    }
+    function setCarrito(arr) {
+      localStorage.setItem('carrito', JSON.stringify(arr));
+      document.getElementById('cart-count').textContent = arr.reduce((a, b) => a + b.cantidad, 0);
+    }
+    // Llenar contador al cargar
+    document.addEventListener('DOMContentLoaded', function() {
+      volverGaleria();
+      setCarrito(getCarrito());
+    });
+    function confirmarVariante() {
+      if (varianteSeleccionada === null) return;
+      const p = productos[varianteSeleccionada];
+      if (p.inventario > 0) {
+        // Carrito persistente
+        let carrito = getCarrito();
+        let idx = carrito.findIndex(item => item.nombre === p.nombre);
+        if (idx >= 0) {
+          if (carrito[idx].cantidad < p.inventario) {
+            carrito[idx].cantidad += 1;
+          }
+        } else {
+          carrito.push({
+            nombre: p.nombre,
+            img: p.img,
+            precio: p.precio,
+            cantidad: 1,
+            idx: varianteSeleccionada
+          });
+        }
+        setCarrito(carrito);
+        p.inventario -= 1;
+        document.getElementById('stock-' + varianteSeleccionada).textContent = p.inventario;
+        if (p.inventario === 0) {
+          document.querySelectorAll('.variante-item')[varianteSeleccionada].classList.add('agotado');
+          document.getElementById('btn-confirmar-variante').disabled = true;
+        }
+        cerrarModalVariante();
+        // Notificaciones visuales modernas
+        mostrarNotificacion('Agregado al carrito: ' + p.nombre + ' - $' + p.precio.toLocaleString(), "success");
+      }
+    }
+    // MODAL CARRITO
+    function abrirCarrito() {
+      renderCarrito();
+      document.getElementById('modal-carrito').style.display = 'flex';
+      setTimeout(() => {
+        const primerCampo = document.getElementById('cliente-nombre');
+        if (primerCampo) primerCampo.focus();
+      }, 200);
+    }
+    function cerrarCarrito() {
+      document.getElementById('modal-carrito').style.display = 'none';
+    }
+
+    // Renderiza los productos del carrito en el modal con botón eliminar
+    function renderCarrito() {
+      const carrito = getCarrito();
+      const lista = document.getElementById('carrito-lista');
+      if (!lista) return;
+      if (carrito.length === 0) {
+        lista.innerHTML = "<div style='margin:24px 0;'>El carrito está vacío.</div>";
+        document.getElementById('carrito-total').textContent = '';
+        return;
+      }
+      let html = '';
+      let total = 0;
+      carrito.forEach((item, i) => {
+        const subtotal = item.precio * item.cantidad;
+        total += subtotal;
+        html += `
+          <div class="carrito-item">
+            <img src="${item.img}" alt="${item.nombre}" class="carrito-img-mini">
+            <span class="carrito-nombre">${item.nombre}</span>
+            <input type="number" min="1" max="99" value="${item.cantidad}" class="carrito-cantidad-input" onchange="actualizarCantidadCarrito(${i}, this.value)">
+            <span class="carrito-precio">$${subtotal.toLocaleString()}</span>
+            <button type="button" class="carrito-eliminar" onclick="eliminarDelCarrito(${i})" title="Eliminar este producto">✕</button>
+          </div>
+        `;
+      });
+      lista.innerHTML = html;
+      document.getElementById('carrito-total').textContent = "Total: $" + total.toLocaleString();
+    }
+
+    function actualizarCantidadCarrito(idx, nuevaCantidad) {
+      let carrito = getCarrito();
+      nuevaCantidad = parseInt(nuevaCantidad, 10);
+      if (isNaN(nuevaCantidad) || nuevaCantidad < 1) return;
+      carrito[idx].cantidad = nuevaCantidad;
+      setCarrito(carrito);
+      renderCarrito();
+    }
+
+    // Elimina un producto del carrito
+    function eliminarDelCarrito(idx) {
+      let carrito = getCarrito();
+      carrito.splice(idx, 1);
+      setCarrito(carrito);
+      renderCarrito();
+    }
+
+    // Limpia los errores del formulario
+    function limpiarErrores() {
+      document.getElementById('error-nombre').textContent = '';
+      document.getElementById('error-email').textContent = '';
+      document.getElementById('error-direccion').textContent = '';
+      document.getElementById('error-telefono').textContent = '';
+    }
+
+    // Accesibilidad: cerrar modal con Escape y enfocar primer campo
+    document.addEventListener('keydown', function(e) {
+      const modal = document.getElementById('modal-carrito');
+      if (modal && modal.style.display === 'flex') {
+        if (e.key === 'Escape') {
+          cerrarCarrito();
+        }
+      }
+    });
+    // Scroll automático al primer error
+    function scrollToFirstError() {
+      const error = document.querySelector('.form-error:not(:empty)');
+      if (error) {
+        error.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    // Generar recibo PDF usando jsPDF
+    function generarReciboPDF({ cliente, productos, total, fecha, pago }) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.text('Recibo de Compra - Tierra Viva', 15, 18);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+      doc.text(`Fecha: ${fecha}`, 15, 28);
+      doc.text(`Cliente: ${cliente.nombre}`, 15, 36);
+      doc.text(`Correo: ${cliente.email}`, 15, 44);
+      doc.text(`Dirección: ${cliente.direccion}`, 15, 52);
+      if (cliente.telefono) doc.text(`Teléfono: ${cliente.telefono}`, 15, 60);
+      doc.text(`Método de pago: ${pago.charAt(0).toUpperCase() + pago.slice(1)}`, 15, 68);
+      let y = cliente.telefono ? 76 : 68;
+      doc.text('Productos:', 15, y);
+      y += 8;
+      productos.forEach(item => {
+        doc.text(`${item.nombre} x${item.cantidad} - $${item.precio.toLocaleString()} = $${(item.precio * item.cantidad).toLocaleString()}`, 15, y);
+        y += 8;
+      });
+      doc.text(`Total: $${total.toLocaleString()}`, 15, y + 4);
+      doc.save(`Recibo_${cliente.nombre.replace(/\s+/g, '_')}_${Date.now()}.pdf`);
+    }
+
+    // Validación y envío del formulario de compra (mejorada y registra en la base de datos)
+    document.getElementById('form-compra').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      limpiarErrores();
+      // --- Recoge datos del formulario ---
+      const nombre = document.getElementById('cliente-nombre').value.trim();
+      const email = document.getElementById('cliente-email').value.trim();
+      const direccion = document.getElementById('cliente-direccion').value.trim();
+      const telefono = document.getElementById('cliente-telefono').value.trim();
+      const pago = document.querySelector('input[name="pago"]:checked')?.value || '';
+      const carrito = getCarrito();
+      // Fecha automática
+      const fecha = new Date().toLocaleString();
+      // --- Construcción del objeto datosCompra ---
+      const cliente = { nombre, email, direccion };
+      if (telefono) cliente.telefono = telefono;
+      const productos = carrito.map(item => ({
+        nombre: item.nombre,
+        cantidad: item.cantidad,
+        precio: item.precio
+      }));
+      const total = productos.reduce((a, b) => a + (b.precio * b.cantidad), 0);
+      const datosCompra = { productos, cliente, pago, total, fecha };
+      console.log("Cuerpo que se enviará a la API:", datosCompra);
+      // --- ENVÍO A LA API ---
+      try {
+        const res = await fetch('http://localhost:3001/api/comprar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(datosCompra)
+        });
+        let data = {};
+        try { data = await res.json(); } catch (e) { data = {}; }
+        if (res.ok && data.success) {
+          Swal.fire({
+            icon: 'success',
+            title: '¡Compra realizada!',
+            text: 'Tu compra fue guardada exitosamente. Se descargará tu recibo.',
+            timer: 3000,
+            showConfirmButton: false
+          });
+          generarReciboPDF({
+            cliente: datosCompra.cliente,
+            productos: datosCompra.productos,
+            total: datosCompra.total,
+            fecha: datosCompra.fecha,
+            pago: datosCompra.pago
+          });
+          setCarrito([]);
+          cerrarCarrito();
+          setTimeout(() => location.reload(), 1000);
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error en la compra',
+            html: data.mensaje ? data.mensaje : 'Ocurrió un error inesperado. Revisa los datos enviados.'
+          });
+        }
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de conexión',
+          text: 'No se pudo conectar con el servidor. Intenta más tarde.'
+        });
+      }
+    });
+
+    // Notificaciones visuales modernas
+    function mostrarNotificacion(mensaje, tipo) {
+      const notificaciones = document.getElementById('notificaciones');
+      const div = document.createElement('div');
+      div.className = `notificacion notificacion-${tipo}`;
+      div.textContent = mensaje;
+      notificaciones.appendChild(div);
+      setTimeout(() => {
+        div.classList.add('visible');
+      }, 100);
+      setTimeout(() => {
+        div.classList.remove('visible');
+        setTimeout(() => {
+          notificaciones.removeChild(div);
+        }, 300);
+      }, 3000);
+    }
+    function abrirPerfilModal() {
+      const compras = JSON.parse(localStorage.getItem('compras_usuario') || '[]');
+      const lista = document.getElementById('lista-compras');
+      lista.innerHTML = compras.length
+        ? compras.map(p => `<li>${p.nombre} x${p.cantidad} - $${p.precio.toLocaleString()}</li>`).join('')
+        : '<li>No has comprado productos aún.</li>';
+      document.getElementById('modal-perfil').style.display = 'flex';
+    }
+    function cerrarPerfilModal() {
+      document.getElementById('modal-perfil').style.display = 'none';
+    }
+    function cerrarSesion() {
+      localStorage.removeItem('usuario');
+      localStorage.removeItem('compras_usuario');
+      window.location.href = '/bienvenida.html';
+    }
+  </script>
+  
+/* Mejora visual del modal y formulario */
+
+
+</body>
+</html>

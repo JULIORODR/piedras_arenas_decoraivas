@@ -1,99 +1,110 @@
+<!-- Página principal de productos de Piedras y Arenas Decorativas -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Piedras y Arenas Decorativas - Productos</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tierra Viva - Productos</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body class="decor-bg">
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <img src="../../images/letras N.png" alt="Logo Piedras y Arenas" class="sidebar-logo">
-            <h1>Piedras y Arenas</h1>
-        </div>
-        <nav class="sidebar-nav">
-            <ul>
-                <li><a href="#">Inicio</a></li>
-                <li><a href="#">Gravas Decorativas</a></li>
-                <li><a href="#">Piedras Naturales</a></li>
-                <li><a href="#">Arenas</a></li>
-                <li><a href="#">Contacto</a></li>
-            </ul>
-        </nav>
-        <div class="sidebar-social">
-            <a href="#" class="icon-social">FB</a>
-            <a href="#" class="icon-social">IG</a>
-            <a href="#" class="icon-social">WA</a>
-        </div>
-    </aside>
-    <main class="main-content">
-        <section class="hero-banner">
-            <div class="carousel-container">
-                <div class="carousel-slide active">
-                    <img src="../../images/imagen3.png" alt="Decoración con piedras y arenas" class="hero-img">
-                </div>
-            </div>
-        </section>
-        <section class="products-section">
-            <h2 class="products-title">Nuestros <span>Productos</span></h2>
-            <div class="products-filters">
-                <button class="filter-btn active">Todos</button>
-                <button class="filter-btn">Piedras</button>
-                <button class="filter-btn">Arenas</button>
-                <button class="filter-btn">Terrarios</button>
-            </div>
-            <div class="products-grid">
-                <div class="product-card">
-                    <img src="../../images/imagen2.png" alt="Piedra decorativa">
-                    <h3>Piedra Decorativa </h3>
-                    <p>Ideal para jardines y decoración de interiores.</p>
-                    <span class="product-price">$$$$</span>
-                </div>
-                <div class="product-card">
-                    <img src="../../images/imagen5.jpg" alt="Arena decorativa">
-                    <h3>Arena Decorativas</h3>
-                    <p>Perfecta para acuarios y manualidades.</p>
-                    <span class="product-price">$$$</span>
-                </div>
-                <div class="product-card">
-                    <img src="../../images/Terrario Sand Art Illimani.jpg" alt="Piedra volcánica">
-                    <h3>Terrarios </h3>
-                    <p>Excelente para decorar el interios de tu hogar</p>
-                    <span class="product-price">$$$</span>
-                </div>
-                <div class="product-card">
-                    <img src="../../images/imagen3.png" alt="Grava decorativa">
-                    <h3>Terrarios Naturales</h3>
-                    <p>Para mantener la naturaleza en tu hogar.</p>
-                    <span class="product-price">$$$</span>
-                </div>
-                <!-- Más productos aquí -->
-            </div>
-        </section>
-        <footer class="decor-footer">
-            <div class="footer-newsletter">
-                <h4>Suscríbete a nuestro boletín</h4>
-                <form class="newsletter-form">
-                    <input type="email" placeholder="Tu correo electrónico">
-                    <button type="submit">Suscribirse</button>
-                </form>
-            </div>
-            <div class="footer-info">
-                <div class="footer-logo">
-                    <img src="../../images/letras N.png" alt="Logo Piedras y Arenas">
-                </div>
-                <div class="footer-contact">
-                    <p>Dirección: Calle Jardín 123, Ciudad Decorativa</p>
-                    <p>Tel: 555-123-4567</p>
-                    <p>Email: contacto@piedrasyarenas.com</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Piedras y Arenas Decorativas. Todos los derechos reservados.</p>
-            </div>
-        </footer>
-    </main>
+<body>
+  <header>
+    <div class="logo">Tierra Viva</div>
+    <nav>
+      <a href="#">Inicio</a>
+      <a href="#" class="active">Productos</a>
+      <a href="#">Proyectos</a>
+      <a href="#">Contacto</a>
+      <span class="search">&#128269;</span>
+    </nav>
+  </header>
+  <main class="contenido-central">
+    <h1 class="titulo-principal">Explora nuestra colección<br>de piedras y arenas</h1>
+    <div class="filtros filtros-unificados">
+      <select>
+        <option>Tipo</option>
+      </select>
+      <select>
+        <option>Color</option>
+      </select>
+      <select>
+        <option>Uso</option>
+      </select>
+    </div>
+    <section class="productos productos-unificados">
+      <!-- Tarjetas de producto con estilo limpio y natural -->
+      <div class="producto tarjeta-producto">
+        <img src="../images/piedra-rio.jpg" alt="Piedra de río" class="img-producto-resp">
+        <h2>Piedra de río<br><span class="precio">$25,000</span></h2>
+        <p class="descripcion-producto">Piedra fina, ideal para caminos y decoración.</p>
+        <button class="btn btn-verde agregar-carrito"
+          data-id="1"
+          data-nombre="Piedra de río"
+          data-precio="25000"
+          data-imagen="../images/piedra-rio.jpg"
+          data-stock="10"
+        >Agregar al carrito</button>
+      </div>
+      <div class="producto tarjeta-producto">
+        <img src="../images/primiuminta.jpg" alt="Priumuntunta premium" class="img-producto-resp">
+        <h2>Priumuntunta premium</h2>
+        <p class="descripcion-producto">Piedra para jarradero</p>
+        <button class="btn btn-verde agregar-carrito"
+          data-id="2"
+          data-nombre="Priumuntunta premium"
+          data-precio="42000"
+          data-imagen="../images/primiuminta.jpg"
+          data-stock="8"
+        >Agregar al carrito</button>
+      </div>
+      <div class="producto tarjeta-producto">
+        <div class="img img3"></div>
+        <h2>Grava volcánica<br><span class="precio">$33,800</span></h2>
+        <p class="descripcion-producto">Color óxido</p>
+        <button class="btn btn-marron">Ver detalles</button>
+      </div>
+      <div class="producto tarjeta-producto">
+        <div class="img img4"></div>
+        <h2>Gavillas de piedra negra</h2>
+        <p class="descripcion-producto">Decorativa para jardines</p>
+        <button class="btn btn-verde">Ver detalles</button>
+      </div>
+      <div class="producto tarjeta-producto">
+        <div class="img img5"></div>
+        <h2>Grava de granito<br><span class="precio">$35,600</span></h2>
+        <p class="descripcion-producto">Acesa retroética</p>
+        <button class="btn btn-verde">Ver detalles</button>
+      </div>
+      <div class="producto tarjeta-producto">
+        <div class="img img6"></div>
+        <h2>Piedra de mármol<br><span class="precio">$18,000</span></h2>
+        <p class="descripcion-producto">Piedra de mármol</p>
+        <button class="btn btn-marron">Ver detalles</button>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <span>Recibe inspiración natural y ofertas exclusivas</span>
+    <span class="icon">&#x1F5D2;</span>
+  </footer>
+  <style>
+    /* Diseño limpio y responsivo para imágenes de productos */
+    .img-producto-resp {
+      width: 100%;
+      max-width: 220px;
+      height: auto;
+      border-radius: 10px;
+      display: block;
+      margin: 0 auto 16px auto;
+      object-fit: cover;
+    }
+    @media (max-width: 700px) {
+      .img-producto-resp {
+        max-width: 100%;
+        height: auto;
+      }
+    }
+  </style>
 </body>
 </html>
