@@ -1490,3 +1490,55 @@ body {
     .swal2-popup-custom { border-radius: 18px !important; border: 2px solid #bfa074 !important; }
 .swal2-confirm-custom { background: #bfa074 !important; color: #fff !important; font-weight: bold; border-radius: 8px !important; }
 .swal2-cancel-custom { background: #fff !important; color: #bfa074 !important; border: 1.5px solid #bfa074 !important; border-radius: 8px !important; }
+
+/* --- Carrito deslizante (modal-carrito) --- */
+#modal-carrito {
+  align-items: flex-start;
+  justify-content: flex-end;
+  background: rgba(0,0,0,0.25);
+  z-index: 1000;
+}
+#modal-carrito .modal-content-form {
+  max-width: 420px;
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  border-radius: 0;
+  border-top-left-radius: 18px;
+  border-bottom-left-radius: 18px;
+  box-shadow: -2px 0 16px rgba(0,0,0,0.08);
+  overflow-y: auto;
+  position: relative;
+  right: 0;
+  top: 0;
+  animation: slideInCart 0.35s cubic-bezier(.4,1.4,.6,1) 1;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+@keyframes slideInCart {
+  from { transform: translateX(100%);}
+  to { transform: translateX(0);}
+}
+#modal-carrito .modal-close {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  z-index: 10;
+}
+#modal-carrito .form-compra-finalizar {
+  overflow-y: auto;
+  max-height: 55vh;
+  padding-bottom: 24px;
+}
+#carrito-lista {
+  max-height: 180px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+@media (max-width: 600px) {
+  #modal-carrito .modal-content-form {
+    max-width: 100vw;
+    border-radius: 0;
+  }
+}

@@ -45,6 +45,10 @@ app.post('/api/registro', (req, res) => {
     (error, results) => {
       if (error) {
         console.error('Error al registrar usuario:', error);
+        // Manejo específico para correo duplicado
+        if (error.code === 'ER_DUP_ENTRY') {
+          return res.status(400).json({ message: 'Este correo electrónico ya está registrado. Por favor, usa otro correo o inicia sesión.' });
+        }
         return res.status(500).json({ message: 'Error al registrar el usuario.' });
       }
       res.status(201).json({ message: 'Usuario registrado exitosamente.' });
@@ -78,94 +82,55 @@ app.post('/api/login', (req, res) => {
   });
 });
 
-// Ruta para obtener todos los productos
-app.post('/api/productos', (req, res) => {
-  // Consulta para obtener todos los productos de la base de datos
-  connection.query('SELECT * FROM productos', (error, results) => {
-    if (error) {
-      console.error('Error al obtener productos:', error);
-      return res.status(500).json({ message: 'Error al obtener los productos.' });
-    }
-    res.status(200).json(results); // Devuelve los productos encontrados
-  });
-});
-
-// Utilidad para formatear fecha a 'YYYY-MM-DD HH:mm:ss'
-function toMySQLDatetime(date) {
-  let d = date ? new Date(date) : new Date();
-  if (isNaN(d.getTime())) d = new Date();
-  const pad = n => n < 10 ? '0' + n : n;
-  return d.getFullYear() + '-' +
-    pad(d.getMonth() + 1) + '-' +
-    pad(d.getDate()) + ' ' +
-    pad(d.getHours()) + ':' +
-    pad(d.getMinutes()) + ':' +
-    pad(d.getSeconds());
-}
-
-// Ruta para comprar una piedra (detalles)
-app.post('/api/comprar-piedra', (req, res) => {
-  const { id, cantidad, cliente, pago } = req.body;
-  // Forzar método de pago a "efectivo" (ignora lo que venga del frontend)
-  const metodoPago = "efectivo";
-  const fechaMySQL = toMySQLDatetime();
-  if (
-    !id ||
-    !cantidad ||
-    !cliente ||
-    typeof cliente.nombre !== 'string' ||
-    typeof cliente.email !== 'string' ||
-    typeof cliente.direccion !== 'string' ||
-    !String(cliente.nombre).trim() ||
-    !String(cliente.email).trim() ||
-    !String(cliente.direccion).trim()
-  ) {
-    return res.status(400).json({ success: false, message: 'Faltan datos obligatorios para la compra.' });
+// Ruta para comprar un producto
+app.post('/api/comprar', (req, res) => {
+  const { producto_id, cantidad, cliente_nombre, cliente_email } = req.body; 
+  if (!producto_id || !cantidad || !cliente_nombre || !cliente_email) {
+    return res.status(400).json({ message: 'Faltan datos para la compra' });
   }
+  // Inserta la compra en la tabla 'compras'
+  connection.query(
+    'INSERT INTO comprar (producto_id, cantidad, cliente_nombre, cliente_email) VALUES (?, ?, ?, ?)',
+    [producto_id, cantidad, cliente_nombre, cliente_email],
+    (error, results) => {
+      if (error) {
+        console.error('Error al registrar compra:', error);
+        return res.status(500).json({ message: 'Error al procesar la compra.' });
+      }
+      // Aquí podrías generar una factura PDF y devolver su URL
+      res.status(201).json({ message: 'Compra realizada exitosamente.', factura_pdf_url: null });
+    }
+  );
+}
+);
+
+// Ruta para comprar una piedra (descontar stock y guardar detalles en compras y detalle_compra)
+app.post('/api/comprar-piedra', (req, res) => {
+   // Aquí va la lógica para registrar la compra de una piedra
+  res.json({ success: true, message: 'Compra registrada correctamente.' });
+  const { id, cantidad, cliente, pago, fecha } = req.body;
+  if (!id || !cantidad) return res.status(400).json({ success: false, message: 'Faltan datos' });
 
   connection.query('SELECT cantidad, valor FROM piedras WHERE id = ?', [id], (err, results) => {
-    if (err) {
-      console.error('Error al consultar piedra:', err);
-      return res.status(500).json({ success: false, message: 'Error al consultar piedra.' });
-    }
-    if (results.length === 0) {
-      console.error('Piedra no encontrada');
-      return res.status(404).json({ success: false, message: 'Piedra no encontrada' });
-    }
-    if (results[0].cantidad < cantidad) {
-      console.error('Stock insuficiente');
-      return res.status(400).json({ success: false, message: 'Stock insuficiente' });
-    }
-    const valor_unitario = Number(results[0].valor);
-    if (isNaN(valor_unitario)) {
-      console.error('El valor de la piedra no es un número válido');
-      return res.status(500).json({ success: false, message: 'El valor de la piedra no es válido.' });
-    }
+    if (err || results.length === 0) return res.status(404).json({ success: false, message: 'Piedra no encontrada' });
+    if (results[0].cantidad < cantidad) return res.status(400).json({ success: false, message: 'Stock insuficiente' });
+    const valor_unitario = results[0].valor;
     // Descontar stock
     connection.query('UPDATE piedras SET cantidad = cantidad - ? WHERE id = ?', [cantidad, id], (err2) => {
-      if (err2) {
-        console.error('Error al actualizar stock:', err2);
-        return res.status(500).json({ success: false, message: 'Error al actualizar stock' });
-      }
+      if (err2) return res.status(500).json({ success: false, message: 'Error al actualizar stock' });
       // Guardar en tabla compras
       connection.query(
         'INSERT INTO compras (cliente_nombre, cliente_email, cliente_direccion, pago, fecha) VALUES (?, ?, ?, ?, ?)',
-        [cliente.nombre.trim(), cliente.email.trim(), cliente.direccion.trim(), metodoPago, fechaMySQL],
+        [cliente?.nombre || '', cliente?.email || '', cliente?.direccion || '', pago || '', fecha || ''],
         (err3, resultCompra) => {
-          if (err3) {
-            console.error('Error al registrar la compra:', err3);
-            return res.status(500).json({ success: false, message: 'Error al registrar la compra' });
-          }
+          if (err3) return res.status(500).json({ success: false, message: 'Error al registrar la compra' });
           const compraId = resultCompra.insertId;
           // Guardar detalle de la compra
           connection.query(
             'INSERT INTO detalle_compras (compra_id, piedra_id, cantidad, precio_unitario) VALUES (?, ?, ?, ?)',
             [compraId, id, cantidad, valor_unitario],
             (err4) => {
-              if (err4) {
-                console.error('Error al registrar el detalle de compra:', err4);
-                return res.status(500).json({ success: false, message: 'Error al registrar el detalle de compra' });
-              }
+              if (err4) return res.status(500).json({ success: false, message: 'Error al registrar el detalle de compra' });
               res.status(200).json({ success: true, message: 'Compra realizada y registrada' });
             }
           );
@@ -175,71 +140,82 @@ app.post('/api/comprar-piedra', (req, res) => {
   });
 });
 
-// Ruta para comprar varios productos del carrito (única y correcta)
+// Ruta para comprar una arena (descontar stock y guardar detalles en compras y detalle_compras)
+app.post('/api/comprar-arena', (req, res) => {
+  const { id, cantidad, cliente, pago, fecha } = req.body;
+  if (!id || !cantidad) return res.status(400).json({ success: false, message: 'Faltan datos' });
+
+  connection.query('SELECT cantidad, valor FROM arenas WHERE id = ?', [id], (err, results) => {
+    if (err || results.length === 0) return res.status(404).json({ success: false, message: 'Arena no encontrada' });
+    if (results[0].cantidad < cantidad) return res.status(400).json({ success: false, message: 'Stock insuficiente' });
+    const valor_unitario = results[0].valor;
+    // Descontar stock
+    connection.query('UPDATE arenas SET cantidad = cantidad - ? WHERE id = ?', [cantidad, id], (err2) => {
+      if (err2) return res.status(500).json({ success: false, message: 'Error al actualizar stock' });
+      // Guardar en tabla compras
+      connection.query(
+        'INSERT INTO compras (cliente_nombre, cliente_email, cliente_direccion, pago, fecha) VALUES (?, ?, ?, ?, ?)',
+        [cliente?.nombre || '', cliente?.email || '', cliente?.direccion || '', pago || '', fecha || ''],
+        (err3, resultCompra) => {
+          if (err3) return res.status(500).json({ success: false, message: 'Error al registrar la compra' });
+          const compraId = resultCompra.insertId;
+          // Guardar detalle de la compra
+          connection.query(
+            'INSERT INTO detalle_compras (compra_id, arena_id, cantidad, precio_unitario) VALUES (?, ?, ?, ?)',
+            [compraId, id, cantidad, valor_unitario],
+            (err4) => {
+              if (err4) return res.status(500).json({ success: false, message: 'Error al registrar el detalle de compra' });
+              res.status(200).json({ success: true, message: 'Compra realizada y registrada' });
+            }
+          );
+        }
+      );
+    });
+  });
+});
+
+// Ruta para comprar varios productos del carrito
 app.post('/api/comprar', (req, res) => {
-  const { productos, cliente, pago } = req.body;
-  // Forzar método de pago a "efectivo" (ignora lo que venga del frontend)
-  const metodoPago = "efectivo";
-  const fechaMySQL = toMySQLDatetime();
-  if (!Array.isArray(productos) || productos.length === 0 || !cliente) {
+   // Aquí va la lógica para registrar la compra de una piedra
+  res.json({ success: true, message: 'Compra registrada correctamente.' });
+  const { productos, cliente, pago, fecha } = req.body;
+  if (!Array.isArray(productos) || productos.length === 0 || !cliente || !pago || !fecha) {
     return res.status(400).json({ success: false, message: 'Faltan datos' });
   }
   // Verificar stock de todos los productos
   const ids = productos.map(p => p.id);
   connection.query('SELECT id, cantidad, valor FROM piedras WHERE id IN (?)', [ids], (err, results) => {
-    if (err) {
-      console.error('Error al verificar stock:', err);
-      return res.status(500).json({ success: false, message: 'Error al verificar stock.' });
-    }
+    if (err) return res.status(500).json({ success: false, message: 'Error al verificar stock.' });
     for (let p of productos) {
       const piedra = results.find(r => r.id == p.id);
-      if (!piedra) {
-        console.error(`Piedra ID ${p.id} no encontrada`);
-        return res.status(404).json({ success: false, message: `Piedra ID ${p.id} no encontrada` });
-      }
-      if (piedra.cantidad < p.cantidad) {
-        console.error(`Stock insuficiente para ${piedra.id}`);
-        return res.status(400).json({ success: false, message: `Stock insuficiente para ${piedra.id}` });
-      }
+      if (!piedra) return res.status(404).json({ success: false, message: `Piedra ID ${p.id} no encontrada` });
+      if (piedra.cantidad < p.cantidad) return res.status(400).json({ success: false, message: `Stock insuficiente para ${piedra.id}` });
     }
     // Descontar stock
     let updates = productos.map(p => new Promise((resolve, reject) => {
       connection.query('UPDATE piedras SET cantidad = cantidad - ? WHERE id = ?', [p.cantidad, p.id], (e) => e ? reject(e) : resolve());
     }));
     Promise.all(updates).then(() => {
+      // Guardar en tabla compras
       connection.query(
         'INSERT INTO compras (cliente_nombre, cliente_email, cliente_direccion, pago, fecha) VALUES (?, ?, ?, ?, ?)',
-        [cliente.nombre, cliente.email, cliente.direccion, metodoPago, fechaMySQL],
+        [cliente.nombre, cliente.email, cliente.direccion, pago, fecha],
         (err2, resultCompra) => {
-          if (err2) {
-            console.error('Error al registrar la compra:', err2);
-            return res.status(500).json({ success: false, message: 'Error al registrar la compra.' });
-          }
+          if (err2) return res.status(500).json({ success: false, message: 'Error al registrar la compra.' });
           const compraId = resultCompra.insertId;
           // Guardar detalles de la compra
-          const detalles = productos.map(p => {
-            const piedra = results.find(r => r.id == p.id);
-            if (!piedra) {
-              console.error(`No se encontró piedra con id ${p.id} para detalle_compras`);
-              return [compraId, p.id, p.cantidad, 0];
-            }
-            return [compraId, p.id, p.cantidad, Number(piedra.valor)];
-          });
+          const detalles = productos.map(p => [compraId, p.id, p.cantidad, Number(results.find(r => r.id == p.id).valor)]);
           connection.query(
             'INSERT INTO detalle_compras (compra_id, piedra_id, cantidad, precio_unitario) VALUES ?',
             [detalles],
             (err3) => {
-              if (err3) {
-                console.error('Error al registrar los detalles de la compra:', err3);
-                return res.status(500).json({ success: false, message: 'Error al registrar los detalles de la compra.' });
-              }
+              if (err3) return res.status(500).json({ success: false, message: 'Error al registrar los detalles de la compra.' });
               res.status(200).json({ success: true, message: 'Compra registrada correctamente.' });
             }
           );
         }
       );
-    }).catch((errUpdate) => {
-      console.error('Error al actualizar stock:', errUpdate);
+    }).catch(() => {
       res.status(500).json({ success: false, message: 'Error al actualizar stock.' });
     });
   });
@@ -251,6 +227,23 @@ app.get('/api/piedras', (req, res) => {
     if (error) {
       console.error('Error al obtener piedras:', error);
       return res.status(500).json({ message: 'Error al obtener las piedras.' });
+    }
+    res.status(200).json(results);
+  });
+});
+
+// Ruta para traer todos los productos de piedras, arenas y terrarios
+app.get('/api/todos-productos', (req, res) => {
+  const queries = [
+    `SELECT id, nombre AS nombre, valor, imagen_url, descripcion, 'piedra' AS tipo FROM piedras`,
+    `SELECT id, nombre AS nombre, valor, imagen_url, descripcion, 'arena' AS tipo FROM arenas`,
+    `SELECT id, nombre AS nombre, valor, imagen_url, descripcion, 'terrario' AS tipo FROM terrarios`
+  ];
+  const sql = queries.join(' UNION ALL ');
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error al obtener todos los productos:', err);
+      return res.status(500).json({ message: 'Error al obtener los productos.' });
     }
     res.status(200).json(results);
   });

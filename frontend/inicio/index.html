@@ -161,17 +161,24 @@
       </form>
     </div>
   </div>
-  <div id="modal-perfil" class="modal-variante" style="display:none;">
-    <div class="modal-content modal-content-form" id="modal-perfil-content">
+  <!-- Modal de perfil flotante, aparece a la derecha y encima de la página -->
+  <div id="modal-perfil" class="perfil-modal-overlay" style="display:none;">
+    <div class="perfil-modal-glass">
       <button class="modal-close" onclick="cerrarPerfilModal()" style="font-size:2rem;top:10px;right:16px;">&times;</button>
-      <h2>Mi Perfil</h2>
-      <div id="perfil-compras">
-        <h3>Productos comprados</h3>
-        <ul id="lista-compras">
-          <!-- Se llena por JS -->
-        </ul>
+      <div class="perfil-avatar-modal">
+        <img src="/images/avatar-default.svg" alt="Avatar usuario" />
       </div>
-      <button class="btn-primary btn-form-grande" onclick="cerrarSesion()" style="margin-top:18px;">Cerrar sesión</button>
+      <h2 class="perfil-nombre-modal" id="perfil-nombre-modal">Usuario</h2>
+      <div class="perfil-email-modal" id="perfil-email-modal"></div>
+      <div class="perfil-datos-modal">
+        <div><span>Teléfono:</span> <span id="perfil-telefono-modal"></span></div>
+        <div><span>Dirección:</span> <span id="perfil-direccion-modal"></span></div>
+      </div>
+      <div class="perfil-compras-modal">
+        <h3>Mis compras</h3>
+        <ul id="perfil-lista-compras"></ul>
+      </div>
+      <button class="btn-cerrar-sesion-modal" onclick="cerrarSesion()">Cerrar sesión</button>
     </div>
   </div>
   <div id="notificaciones" class="notificaciones"></div>
@@ -613,10 +620,20 @@
   <script>
     // ...existing code...
     function abrirPerfilModal() {
+      const usuario = JSON.parse(localStorage.getItem('usuario')) || {
+        nombre: "Usuario Demo",
+        email: "usuario@demo.com",
+        telefono: "No registrado",
+        direccion: "No registrada"
+      };
       const compras = JSON.parse(localStorage.getItem('compras_usuario') || '[]');
-      const lista = document.getElementById('lista-compras');
+      document.getElementById('perfil-nombre-modal').textContent = usuario.nombre;
+      document.getElementById('perfil-email-modal').textContent = usuario.email;
+      document.getElementById('perfil-telefono-modal').textContent = usuario.telefono || 'No registrado';
+      document.getElementById('perfil-direccion-modal').textContent = usuario.direccion || 'No registrada';
+      const lista = document.getElementById('perfil-lista-compras');
       lista.innerHTML = compras.length
-        ? compras.map(p => `<li>${p.nombre} x${p.cantidad} - $${p.precio.toLocaleString()}</li>`).join('')
+        ? compras.map(p => `<li>${p.nombre} x${p.cantidad} - $${p.precio ? p.precio.toLocaleString() : ''}</li>`).join('')
         : '<li>No has comprado productos aún.</li>';
       document.getElementById('modal-perfil').style.display = 'flex';
     }
@@ -626,75 +643,9 @@
     function cerrarSesion() {
       localStorage.removeItem('usuario');
       localStorage.removeItem('compras_usuario');
-      window.location.href = '/bienvenida.html';
+      window.location.href = '../bienvenida/index.html';
     }
-    // ...existing code...
   </script>
-  <style>
-    /* Apariencia mejorada para el carrito */
-    #cart-modal .modal-content {
-      background: #fffdfa;
-      border: 2px solid #bfa074;
-      box-shadow: 0 8px 32px #0002;
-      border-radius: 18px;
-      position: relative;
-      animation: modalFadeIn .3s;
-    }
-    #cart-items .cart-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-      font-size: 1.05rem;
-    }
-    #cart-items .cart-item:last-child {
-      border-bottom: none;
-    }
-    #cart-items .cart-item span:first-child {
-      flex: 1 1 60%;
-      color: #444;
-    }
-    #cart-items .cart-item span:last-child {
-      flex: 0 0 80px;
-      text-align: right;
-      color: #bfa074;
-      font-weight: bold;
-    }
-    #cart-items .cart-item .cart-remove-btn {
-      background: none;
-      border: none;
-      color: #bfa074;
-      font-size: 1.2rem;
-      margin-left: 10px;
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-    #cart-items .cart-item .cart-remove-btn:hover {
-      color: #a67c52;
-    }
-    #cart-total {
-      border-top: 1.5px solid #bfa074;
-      padding-top: 10px;
-      margin-top: 10px;
-      color: #bfa074;
-    }
-    @keyframes modalFadeIn {
-      from { opacity: 0; transform: translateY(40px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
-    /* Botón revisar pedido */
-    #review-order-btn {
-      background: #bfa074;
-      color: #fff;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      transition: background 0.2s;
-    }
-    #review-order-btn:hover {
-      background: #a67c52;
-    }
-  </style>
+ 
 </body>
 </html>

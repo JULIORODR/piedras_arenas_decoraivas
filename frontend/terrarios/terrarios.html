@@ -11,7 +11,7 @@
   <header class="main-header">
     <div class="logo">Tierra Viva</div>
     <nav class="nav">
-      <a href="#">Inicio</a>
+      <a href="../inicio/index.html">Inicio</a>
       <a href="#">Terrarios</a>
       <a href="#">Proyectos</a>
       <a href="#">Contacto</a>
@@ -101,7 +101,49 @@
   </div>
 </div>
 <script>
-  // ...existing code...
+  // Datos de productos con inventario y campo id
+  const productos = [
+    {
+      id: 1,
+      nombre: "Terrario de vidrio grande",
+      precio: 65000,
+      img: "/images/terrario-vidrio.jpg",
+      desc: "Terrario de vidrio grande con plantas suculentas y decoración natural.",
+      detalles: [
+        ["Material", "Vidrio y piedra"],
+        ["Tamaño", "30x20x20 cm"],
+        ["Incluye", "Plantas, piedras, sustrato"],
+        ["Stock", "Disponible"]
+      ],
+      inventario: 5
+    },
+    {
+      id: 2,
+      nombre: "Kit de terrario DIY",
+      precio: 38000,
+      img: "/images/kit-terrario.jpg",
+      desc: "Kit completo para armar tu propio terrario en casa.",
+      detalles: [
+        ["Incluye", "Recipiente, sustrato, piedras, instrucciones"],
+        ["Tamaño", "20x15x15 cm"],
+        ["Stock", "Disponible"]
+      ],
+      inventario: 8
+    },
+    {
+      id: 3,
+      nombre: "Terrario mini suculentas",
+      precio: 22000,
+      img: "/images/terrario-mini.jpg",
+      desc: "Terrario mini con suculentas, ideal para escritorios y regalos.",
+      detalles: [
+        ["Tamaño", "10x10x10 cm"],
+        ["Incluye", "Suculentas, piedras, sustrato"],
+        ["Stock", "Disponible"]
+      ],
+      inventario: 12
+    }
+  ];
   function abrirPerfilModal() {
     const compras = JSON.parse(localStorage.getItem('compras_usuario') || '[]');
     const lista = document.getElementById('lista-compras');
@@ -118,7 +160,101 @@
     localStorage.removeItem('compras_usuario');
     window.location.href = '/bienvenida.html';
   }
-  // ...existing code...
+  // Al agregar al carrito, guarda el id
+  function confirmarVariante() {
+    if (varianteSeleccionada === null) return;
+    const p = productos[varianteSeleccionada];
+    if (p.inventario > 0) {
+      let carrito = getCarrito();
+      let idx = carrito.findIndex(item => item.id === p.id);
+      if (idx >= 0) {
+        if (carrito[idx].cantidad < p.inventario) {
+          carrito[idx].cantidad += 1;
+        }
+      } else {
+        carrito.push({
+          id: p.id,
+          nombre: p.nombre,
+          img: p.img,
+          precio: p.precio,
+          cantidad: 1
+        });
+      }
+      setCarrito(carrito);
+      p.inventario -= 1;
+      document.getElementById('stock-' + varianteSeleccionada).textContent = p.inventario;
+      if (p.inventario === 0) {
+        document.querySelectorAll('.variante-item')[varianteSeleccionada].classList.add('agotado');
+        document.getElementById('btn-confirmar-variante').disabled = true;
+      }
+      cerrarModalVariante();
+      mostrarNotificacion('Agregado al carrito: ' + p.nombre + ' - $' + p.precio.toLocaleString(), "success");
+    }
+  }
+
+  // En el submit del formulario de compra, envía los productos con id
+  document.getElementById('form-compra').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    limpiarErrores();
+    const nombre = document.getElementById('cliente-nombre').value.trim();
+    const email = document.getElementById('cliente-email').value.trim();
+    const direccion = document.getElementById('cliente-direccion').value.trim();
+    const telefono = document.getElementById('cliente-telefono').value.trim();
+    const pago = document.querySelector('input[name="pago"]:checked')?.value || '';
+    const carrito = getCarrito();
+    const cliente = { nombre, email, direccion };
+    if (telefono) cliente.telefono = telefono;
+    // Incluye el id en cada producto
+    const productosCompra = carrito.map(item => ({
+      id: item.id,
+      nombre: item.nombre,
+      cantidad: item.cantidad,
+      precio: item.precio
+    }));
+    const total = productosCompra.reduce((a, b) => a + (b.precio * b.cantidad), 0);
+    const fecha = new Date().toLocaleString();
+    const datosCompra = { productos: productosCompra, cliente, pago, total, fecha };
+    try {
+      const res = await fetch('http://localhost:3001/api/comprar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datosCompra)
+      });
+      let data = {};
+      try { data = await res.json(); } catch (e) { data = {}; }
+      if (res.ok && data.success) {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Compra realizada!',
+          text: 'Tu compra fue guardada exitosamente. Se descargará tu recibo.',
+          timer: 3000,
+          showConfirmButton: false
+        });
+        generarReciboPDF({
+          cliente: datosCompra.cliente,
+          productos: datosCompra.productos,
+          total: datosCompra.total,
+          fecha: datosCompra.fecha,
+          pago: datosCompra.pago
+        });
+        setCarrito([]);
+        cerrarCarrito();
+        setTimeout(() => location.reload(), 1000);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en la compra',
+          html: data.mensaje ? data.mensaje : 'Ocurrió un error inesperado. Revisa los datos enviados.'
+        });
+      }
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de conexión',
+        text: 'No se pudo conectar con el servidor. Intenta más tarde.'
+      });
+    }
+  });
 </script>
 </body>
 </html>

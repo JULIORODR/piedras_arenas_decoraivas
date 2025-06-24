@@ -8,13 +8,14 @@
   <link rel="stylesheet" href="piedras.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   
 </head>
 <body>
   <header class="main-header">
     <div class="logo">Tierra Viva</div>
     <nav class="nav">
-      <a href="#">Inicio</a>
+      <a href="../inicio/index.html">Inicio</a>
       <a href="#">Productos</a>
       <a href="#">Proyectos</a>
       <a href="#">Contacto</a>
@@ -120,54 +121,13 @@
     <div class="modal-content modal-content-form" id="modal-carrito-content">
       <button class="modal-close" onclick="cerrarCarrito()" style="font-size:2rem;top:10px;right:16px;">&times;</button>
       <h2>Carrito de compras</h2>
-      <form id="form-compra" class="form-compra form-compra-finalizar scroll-formulario">
-        <div class="form-section">
-          <h3 class="form-title"><span class="form-icon">🛒</span>Productos seleccionados</h3>
-          <div id="carrito-lista"></div>
-          <div id="carrito-total" style="margin:12px 0 0 0;font-weight:600;"></div>
-        </div>
-        <div class="form-section">
-          <h3 class="form-title"><span class="form-icon">👤</span>Datos del cliente</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="cliente-nombre"><span class="input-icon">👤</span></label>
-              <input type="text" id="cliente-nombre" required autocomplete="name" placeholder="" />
-              <span class="form-error" id="error-nombre"></span>
-            </div>
-            <div class="form-group">
-              <label for="cliente-email"><span class="input-icon">✉️</span>Correo electrónico</label>
-              <input type="email" id="cliente-email" required autocomplete="email" placeholder="" />
-              <span class="form-error" id="error-email"></span>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="cliente-direccion"><span class="input-icon">🏠</span>Dirección</label>
-            <input type="text" id="cliente-direccion" required autocomplete="street-address" placeholder="" />
-            <span class="form-error" id="error-direccion"></span>
-          </div>
-          <!-- Añadir campo teléfono -->
-          <div class="form-group">
-            <label for="cliente-telefono"><span class="input-icon">📞</span>Teléfono</label>
-            <input type="tel" id="cliente-telefono" autocomplete="tel" placeholder="" />
-            <span class="form-error" id="error-telefono"></span>
-          </div>
-        </div>
-        <div class="form-section">
-          <h3 class="form-title"><span class="form-icon">💳</span>Método de pago</h3>
-          <div class="form-pago-opciones">
-            <label class="form-pago-radio selected">
-              <input type="radio" name="pago" value="transferencia" checked> Transferencia
-            </label>
-            <label class="form-pago-radio">
-              <input type="radio" name="pago" value="tarjeta"> Tarjeta
-            </label>
-            <label class="form-pago-radio">
-              <input type="radio" name="pago" value="efectivo"> Efectivo
-            </label>
-          </div>
-        </div>
-        <button class="btn-primary btn-confirmar btn-form-grande" type="submit" style="width:100%;margin-top:12px;">Finalizar compra</button>
-      </form>
+      <!-- Mostrar productos agregados -->
+      <div id="carrito-lista"></div>
+      <div id="carrito-total" style="margin:12px 0 0 0;font-weight:600;"></div>
+      <!-- Botón para finalizar compra desde carrito -->
+      <button id="btn-finalizar-compra-carrito" class="btn-primary" onclick="finalizarCompraCarrito()" style="margin:15px 0; width:100%; display:none;">Finalizar Compra</button>
+      <!-- Aquí se inserta el formulario reutilizable -->
+      <div id="carrito-formulario-compra"></div>
     </div>
   </div>
   <!-- Modal Perfil -->
@@ -204,6 +164,45 @@
   </footer>
   <!-- Notificaciones visuales -->
   <div id="notificaciones" class="notificaciones"></div>
+  <template id="compra-form-template">
+    <form id="form-compra" class="form-compra form-compra-finalizar scroll-formulario" style="margin-top:24px;">
+      <div class="form-section">
+        <h3 class="form-title"><span class="form-icon">👤</span>Datos del cliente</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cliente-nombre"><span class="input-icon">👤</span></label>
+            <input type="text" id="cliente-nombre" required autocomplete="name" placeholder="" />
+            <span class="form-error" id="error-nombre"></span>
+          </div>
+          <div class="form-group">
+            <label for="cliente-email"><span class="input-icon">✉️</span>Correo electrónico</label>
+            <input type="email" id="cliente-email" required autocomplete="email" placeholder="" />
+            <span class="form-error" id="error-email"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cliente-direccion"><span class="input-icon">🏠</span>Dirección</label>
+          <input type="text" id="cliente-direccion" required autocomplete="street-address" placeholder="" />
+          <span class="form-error" id="error-direccion"></span>
+        </div>
+      </div>
+      <div class="form-section">
+        <h3 class="form-title"><span class="form-icon">💳</span>Método de pago</h3>
+        <div class="form-pago-opciones">
+          <label class="form-pago-radio selected">
+            <input type="radio" name="pago" value="transferencia" checked> Transferencia
+          </label>
+          <label class="form-pago-radio">
+            <input type="radio" name="pago" value="tarjeta"> Tarjeta
+          </label>
+          <label class="form-pago-radio">
+            <input type="radio" name="pago" value="efectivo"> Efectivo
+          </label>
+        </div>
+      </div>
+      <button class="btn-primary btn-confirmar btn-form-grande" type="submit" style="width:100%;margin-top:12px;">Finalizar compra</button>
+    </form>
+  </template>
   <script>
     // Datos de productos con inventario
     const productos = [
@@ -387,6 +386,7 @@
     // MODAL CARRITO
     function abrirCarrito() {
       renderCarrito();
+      renderCompraForm('carrito-formulario-compra', handleCompraSubmit);
       document.getElementById('modal-carrito').style.display = 'flex';
       setTimeout(() => {
         const primerCampo = document.getElementById('cliente-nombre');
@@ -553,7 +553,6 @@
             timer: 3000,
             showConfirmButton: false
           });
-          // Generar factura/recibo PDF al pagar en el carrito
           generarReciboPDF({
             cliente: datosCompra.cliente,
             productos: datosCompra.productos,
@@ -562,13 +561,6 @@
             pago: datosCompra.pago
           });
           setCarrito([]);
-          let compras = JSON.parse(localStorage.getItem('compras_usuario') || '[]');
-          compras = compras.concat(productos.map(p => ({
-            nombre: p.nombre,
-            cantidad: p.cantidad,
-            precio: p.precio
-          })));
-          localStorage.setItem('compras_usuario', JSON.stringify(compras));
           cerrarCarrito();
           setTimeout(() => location.reload(), 1000);
         } else {
@@ -586,6 +578,94 @@
         });
       }
     });
+
+    // Antes de agregar un eventListener, verifica que el elemento existe
+ const formComprarpiedra = document.getElementById('form-comprar-piedra');
+if (formComprarpiedra) {
+   // Aquí va la lógica para registrar la compra de una piedra
+  res.json({ success: true, message: 'Compra registrada correctamente.' });
+  const { productos, cliente, pago, fecha } = req.body;
+  formComprarpiedra.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    limpiarErrores();
+        // --- Recoge datos del formulario ---
+        const nombre = document.getElementById('cliente-nombre').value.trim();
+        const email = document.getElementById('cliente-email').value.trim();
+        const direccion = document.getElementById('cliente-direccion').value.trim();
+        const telefono = document.getElementById('cliente-telefono').value.trim();
+        const pago = document.querySelector('input[name="pago"]:checked')?.value || '';
+        const carrito = getCarrito();
+        const cliente = { nombre, email, direccion };
+        if (telefono) cliente.telefono = telefono;
+        const productos = carrito.map(item => ({
+          nombre: String(item.nombre).trim(),
+          cantidad: Number(item.cantidad),
+          precio: Number(item.precio)
+        }));
+        const total = productos.reduce((a, b) => a + (b.precio * b.cantidad), 0);
+        const fecha = new Date().toLocaleString();
+        const datosCompra = { productos, cliente, pago, total, fecha };
+        // --- Validación antes del fetch ---
+        let errores = [];
+        if (!Array.isArray(productos) || productos.length === 0) errores.push('El carrito está vacío.');
+        if (!cliente || typeof cliente.nombre !== 'string' || !cliente.nombre.trim()) errores.push('Nombre requerido.');
+        if (typeof cliente.email !== 'string' || !cliente.email.trim()) errores.push('Correo requerido.');
+        if (typeof cliente.direccion !== 'string' || !cliente.direccion.trim()) errores.push('Dirección requerida.');
+        if (typeof pago !== 'string' || !pago.trim()) errores.push('Método de pago requerido.');
+        if (typeof total !== 'number' || isNaN(total) || total <= 0) errores.push('Total inválido.');
+        if (typeof fecha !== 'string' || !fecha.trim()) errores.push('Fecha inválida.');
+        productos.forEach((p, i) => {
+          if (typeof p.nombre !== 'string' || !p.nombre.trim()) errores.push(`Producto #${i+1}: nombre requerido.`);
+          if (typeof p.cantidad !== 'number' || isNaN(p.cantidad) || p.cantidad <= 0) errores.push(`Producto #${i+1}: cantidad inválida.`);
+          if (typeof p.precio !== 'number' || isNaN(p.precio) || p.precio < 0) errores.push(`Producto #${i+1}: precio inválido.`);
+        });
+        if (errores.length > 0) {
+          Swal.fire({ icon: 'error', title: 'Error de validación', html: errores.join('<br>') });
+          return;
+        }
+        // ENVÍO A LA API
+        try {
+          const res = await fetch('http://localhost:3001/api/comprar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datosCompra)
+          });
+          let data = {};
+          try { data = await res.json(); } catch (e) { data = {}; }
+          if (res.ok && (data.success || data.message)) {
+            Swal.fire({
+              icon: 'success',
+              title: '¡Compra realizada!',
+              text: 'Tu compra fue guardada exitosamente. Se descargará tu recibo.',
+              timer: 3000,
+              showConfirmButton: false
+            });
+            generarReciboPDF({
+              cliente: datosCompra.cliente,
+              productos: datosCompra.productos,
+              total: datosCompra.total,
+              fecha: datosCompra.fecha,
+              pago: datosCompra.pago
+            });
+            setCarrito([]);
+            cerrarCarrito();
+            setTimeout(() => location.reload(), 1000);
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error en la compra',
+              html: data.mensaje ? data.mensaje : 'Ocurrió un error inesperado. Revisa los datos enviados.'
+            });
+          }
+        } catch (err) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de conexión',
+            text: 'No se pudo conectar con el servidor. Intenta más tarde.'
+          });
+        }
+      });
+    }
 
     // Notificaciones visuales modernas
     function mostrarNotificacion(mensaje, tipo) {
@@ -890,7 +970,6 @@
               timer: 3000,
               showConfirmButton: false
             });
-            // Generar factura/recibo PDF al pagar en el carrito
             generarReciboPDF({
               cliente: datosCompra.cliente,
               productos: datosCompra.productos,
@@ -899,13 +978,6 @@
               pago: datosCompra.pago
             });
             setCarrito([]);
-            let compras = JSON.parse(localStorage.getItem('compras_usuario') || '[]');
-            compras = compras.concat(productos.map(p => ({
-              nombre: p.nombre,
-              cantidad: p.cantidad,
-              precio: p.precio
-            })));
-            localStorage.setItem('compras_usuario', JSON.stringify(compras));
             cerrarCarrito();
             setTimeout(() => location.reload(), 1000);
           } else {
@@ -924,6 +996,177 @@
         }
       });
     }
-  </script>
+
+    // Función para insertar el formulario de compra reutilizable
+  function renderCompraForm(targetId, submitHandler) {
+    const target = document.getElementById(targetId);
+    if (!target) return;
+    target.innerHTML = '';
+    const tpl = document.getElementById('compra-form-template');
+    if (!tpl) return;
+    const form = tpl.content.cloneNode(true);
+    target.appendChild(form);
+    // Asigna el handler centralizado
+    const formEl = target.querySelector('form');
+    if (formEl && typeof submitHandler === 'function') {
+      formEl.onsubmit = submitHandler;
+    }
+  }
+
+  // Handler centralizado para compra desde cualquier lugar
+  async function handleCompraSubmit(e) {
+    e.preventDefault();
+    limpiarErrores();
+    const nombre = document.getElementById('cliente-nombre').value.trim();
+    const email = document.getElementById('cliente-email').value.trim();
+    const direccion = document.getElementById('cliente-direccion').value.trim();
+    const telefono = document.getElementById('cliente-telefono') ? document.getElementById('cliente-telefono').value.trim() : '';
+    const pago = document.querySelector('input[name="pago"]:checked')?.value || '';
+    const carrito = getCarrito();
+    const cliente = { nombre, email, direccion };
+    if (telefono) cliente.telefono = telefono;
+    const productos = carrito.map(item => ({
+      id: item.id,
+      nombre: String(item.nombre).trim(),
+      cantidad: Number(item.cantidad),
+      precio: Number(item.precio)
+    }));
+    const total = productos.reduce((a, b) => a + (b.precio * b.cantidad), 0);
+    const fecha = new Date().toLocaleString();
+    const datosCompra = { productos, cliente, pago, total, fecha };
+    // Validación
+    let errores = [];
+    if (!Array.isArray(productos) || productos.length === 0) errores.push('El carrito está vacío.');
+    if (!cliente || typeof cliente.nombre !== 'string' || !cliente.nombre.trim()) errores.push('Nombre requerido.');
+    if (typeof cliente.email !== 'string' || !cliente.email.trim()) errores.push('Correo requerido.');
+    if (typeof cliente.direccion !== 'string' || !cliente.direccion.trim()) errores.push('Dirección requerida.');
+    if (typeof pago !== 'string' || !pago.trim()) errores.push('Método de pago requerido.');
+    if (typeof total !== 'number' || isNaN(total) || total <= 0) errores.push('Total inválido.');
+    if (typeof fecha !== 'string' || !fecha.trim()) errores.push('Fecha inválida.');
+    productos.forEach((p, i) => {
+      if (typeof p.nombre !== 'string' || !p.nombre.trim()) errores.push(`Producto #${i+1}: nombre requerido.`);
+      if (typeof p.cantidad !== 'number' || isNaN(p.cantidad) || p.cantidad <= 0) errores.push(`Producto #${i+1}: cantidad inválida.`);
+      if (typeof p.precio !== 'number' || isNaN(p.precio) || p.precio < 0) errores.push(`Producto #${i+1}: precio inválido.`);
+    });
+    if (errores.length > 0) {
+      Swal.fire({ icon: 'error', title: 'Error de validación', html: errores.join('<br>') });
+      return;
+    }
+    // ENVÍO A LA API
+    try {
+      const res = await fetch('http://localhost:3001/api/comprar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datosCompra)
+      });
+      let data = {};
+      try { data = await res.json(); } catch (e) { data = {}; }
+      if (res.ok && (data.success || data.message)) {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Compra realizada!',
+          text: 'Tu compra fue guardada exitosamente. Se descargará tu recibo.',
+          timer: 3000,
+          showConfirmButton: false
+        });
+        generarReciboPDF({
+          cliente: datosCompra.cliente,
+          productos: datosCompra.productos,
+          total: datosCompra.total,
+          fecha: datosCompra.fecha,
+          pago: datosCompra.pago
+        });
+        setCarrito([]);
+        cerrarCarrito();
+        setTimeout(() => location.reload(), 1000);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en la compra',
+          html: data.mensaje ? data.mensaje : 'Ocurrió un error inesperado. Revisa los datos enviados.'
+        });
+      }
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de conexión',
+        text: 'No se pudo conectar con el servidor. Intenta más tarde.'
+      });
+    }
+  }
+
+  // Al abrir el carrito, renderiza el formulario reutilizable
+  function abrirCarrito() {
+    renderCarrito();
+    renderCompraForm('carrito-formulario-compra', handleCompraSubmit);
+    document.getElementById('modal-carrito').style.display = 'flex';
+    setTimeout(() => {
+      const primerCampo = document.getElementById('cliente-nombre');
+      if (primerCampo) primerCampo.focus();
+    }, 200);
+  }
+
+  // Para el formulario de compra en detalles, usa el mismo componente y lógica
+  // (Opcional: si quieres formulario en detalles, llama a renderCompraForm en el contenedor adecuado)
+  // Lógica de compra del formulario de la página de detalles (form-compra-piedra)
+  // Esta función se inserta dinámicamente al mostrar el formulario en el detalle de una piedra
+  // (Ver función mostrarDetallePiedra y el siguiente fragmento)
+
+  // Dentro de mostrarDetallePiedra:
+  // ...
+  // document.getElementById('form-compra-piedra').onsubmit = async function(e) {
+  //   e.preventDefault();
+  //   const cantidad = Number(document.getElementById('compra-cantidad').value);
+  //   const nombre = document.getElementById('compra-nombre').value.trim();
+  //   const email = document.getElementById('compra-email').value.trim();
+  //   const direccion = document.getElementById('compra-direccion').value.trim();
+  //   const pago = document.getElementById('compra-pago').value;
+  //   if (!nombre || !email || !direccion || !cantidad || cantidad < 1) {
+  //     Swal.fire('Error', 'Completa todos los campos correctamente.', 'error');
+  //     return;
+  //   }
+  //   try {
+  //     const piedraId = piedra.id || piedra.ID || piedra.Id;
+  //     if (!piedraId) {
+  //       Swal.fire('Error', 'ID de piedra no válido.', 'error');
+  //       return;
+  //     }
+  //     const res = await fetch('http://localhost:3001/api/comprar-piedra', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         id: Number(piedraId),
+  //         cantidad,
+  //         cliente: { nombre, email, direccion },
+  //         pago,
+  //         fecha: new Date().toLocaleString()
+  //       })
+  //     });
+  //     const data = await res.json();
+  //     if (data.success) {
+  //       Swal.fire({
+  //         icon: 'success',
+  //         title: '¡Compra realizada!',
+  //         html: `<b>Producto:</b> ${piedra.nombre_piedra}<br><b>Cantidad:</b> ${cantidad}<br><b>Total:</b> $${(piedra.valor * cantidad).toLocaleString()}<br><b>Cliente:</b> ${nombre}<br><b>Email:</b> ${email}<br><b>Dirección:</b> ${direccion}<br><b>Pago:</b> ${pago}`
+  //       });
+  //       generarReciboPDF({
+  //         cliente: { nombre, email, direccion },
+  //         productos: [{ nombre: piedra.nombre_piedra, cantidad, precio: piedra.valor }],
+  //         total: piedra.valor * cantidad,
+  //         fecha: new Date().toLocaleString(),
+  //         pago
+  //       });
+  //       cargarPiedras();
+  //       volverGaleria();
+  //     } else {
+  //       Swal.fire('Error', data.message, 'error');
+  //     }
+  //   } catch (err) {
+  //     Swal.fire('Error', 'No se pudo conectar con el servidor.', 'error');
+  //   }
+  // };
+
+  // ...existing code...
+</script>
 </body>
 </html>

@@ -22,6 +22,13 @@
         </div>
         <!-- Carrusel sin flechas de navegación -->
     </div>
+    <!-- Agrega este script para limpiar el localStorage al cargar la página de bienvenida -->
+    <script>
+      // Limpia los datos del usuario y compras al llegar a la página de bienvenida
+      localStorage.removeItem('usuario');
+      localStorage.removeItem('compras_usuario');
+      localStorage.removeItem('carrito');
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

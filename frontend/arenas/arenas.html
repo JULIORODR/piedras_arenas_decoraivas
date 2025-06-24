@@ -13,7 +13,7 @@
   <header class="main-header">
     <div class="logo">Tierra Viva</div>
     <nav class="nav">
-      <a href="#">Inicio</a>
+      <a href="../inicio/index.html">Inicio</a>
       <a href="#">Productos</a>
       <a href="#">Proyectos</a>
       <a href="#">Contacto</a>
@@ -195,9 +195,10 @@
   <!-- Notificaciones visuales -->
   <div id="notificaciones" class="notificaciones"></div>
   <script>
-    // Datos de productos con inventario
+    // Datos de productos con inventario y con campo id
     const productos = [
       {
+        id: 1,
         nombre: "Arena de colores (5 kg)",
         precio: 12000,
         img: "/images/arena-color.jpg",
@@ -211,6 +212,7 @@
         inventario: 10
       },
       {
+        id: 2,
         nombre: "Arena blanca fina (10 kg)",
         precio: 18000,
         img: "/images/arena-blanca.jpg",
@@ -224,6 +226,7 @@
         inventario: 7
       },
       {
+        id: 3,
         nombre: "Arena gris volcánica (8 kg)",
         precio: 15000,
         img: "/images/arena-gris.jpg",
@@ -315,24 +318,24 @@
       volverGaleria();
       setCarrito(getCarrito());
     });
+    // Al agregar al carrito, guarda el id
     function confirmarVariante() {
       if (varianteSeleccionada === null) return;
       const p = productos[varianteSeleccionada];
       if (p.inventario > 0) {
-        // Carrito persistente
         let carrito = getCarrito();
-        let idx = carrito.findIndex(item => item.nombre === p.nombre);
+        let idx = carrito.findIndex(item => item.id === p.id);
         if (idx >= 0) {
           if (carrito[idx].cantidad < p.inventario) {
             carrito[idx].cantidad += 1;
           }
         } else {
           carrito.push({
+            id: p.id,
             nombre: p.nombre,
             img: p.img,
             precio: p.precio,
-            cantidad: 1,
-            idx: varianteSeleccionada
+            cantidad: 1
           });
         }
         setCarrito(carrito);
@@ -343,7 +346,6 @@
           document.getElementById('btn-confirmar-variante').disabled = true;
         }
         cerrarModalVariante();
-        // Notificaciones visuales modernas
         mostrarNotificacion('Agregado al carrito: ' + p.nombre + ' - $' + p.precio.toLocaleString(), "success");
       }
     }
@@ -468,18 +470,18 @@
       const telefono = document.getElementById('cliente-telefono').value.trim();
       const pago = document.querySelector('input[name="pago"]:checked')?.value || '';
       const carrito = getCarrito();
-      // Fecha automática
-      const fecha = new Date().toLocaleString();
-      // --- Construcción del objeto datosCompra ---
       const cliente = { nombre, email, direccion };
       if (telefono) cliente.telefono = telefono;
-      const productos = carrito.map(item => ({
+      // Incluye el id en cada producto
+      const productosCompra = carrito.map(item => ({
+        id: item.id,
         nombre: item.nombre,
         cantidad: item.cantidad,
         precio: item.precio
       }));
-      const total = productos.reduce((a, b) => a + (b.precio * b.cantidad), 0);
-      const datosCompra = { productos, cliente, pago, total, fecha };
+      const total = productosCompra.reduce((a, b) => a + (b.precio * b.cantidad), 0);
+      const fecha = new Date().toLocaleString();
+      const datosCompra = { productos: productosCompra, cliente, pago, total, fecha };
       console.log("Cuerpo que se enviará a la API:", datosCompra);
       // --- ENVÍO A LA API ---
       try {

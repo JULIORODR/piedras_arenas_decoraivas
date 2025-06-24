@@ -54,14 +54,31 @@ document.addEventListener('DOMContentLoaded', function() { // Espera a que el DO
                 });
 
                 const data = await response.json(); // Espera la respuesta en formato JSON
-                if (response.ok) { // Si la respuesta es exitosa
-                    alert('¡Registro exitoso! Ahora puedes iniciar sesión.'); // Muestra mensaje de éxito
-                    window.location.href = '../login/index.html'; // Redirige a la página de login
+                 if (response.ok) { // Si la respuesta es exitosa
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Registro exitoso!',
+                        html: `<b>Nombre:</b> ${nombre}<br><b>Correo:</b> ${correo}<br><img src='https://ui-avatars.com/api/?name=${encodeURIComponent(nombre)}&background=8bc34a&color=fff&size=128' alt='Foto de perfil' style='margin-top:12px;border-radius:50%;box-shadow:0 2px 8px #aaa;'>`,
+                        confirmButtonText: 'Ir a iniciar sesión',
+                        allowOutsideClick: false
+                    }).then(() => {
+                        window.location.href = '../login/index.html';
+                    });
                 } else {
-                    alert(data.message || 'Error al registrar el usuario.'); // Muestra mensaje de error del backend
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error en el registro',
+                        text: data.message || 'Error al registrar el usuario.',
+                        confirmButtonText: 'Entendido'
+                    });
                 }
             } catch (error) {
-                alert('Error de conexión con el servidor.'); // Alerta si hay un error de red
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de conexión',
+                    text: 'No se pudo conectar con el servidor. Verifica tu conexión e intenta nuevamente.',
+                    confirmButtonText: 'Entendido'
+                });
             }
         });
     }
